@@ -1,6 +1,7 @@
 package klassen.matt.dndproject.model.creature;
 
 import klassen.matt.dndproject.model.actions.Action;
+import klassen.matt.dndproject.model.actions.Item;
 import klassen.matt.dndproject.model.actions.Spell;
 import klassen.matt.dndproject.model.creature.exception.HitPointException;
 import klassen.matt.dndproject.model.creature.exception.IllegalValueException;
@@ -8,6 +9,7 @@ import klassen.matt.dndproject.model.traits.AbilityScores;
 import klassen.matt.dndproject.model.traits.Feature;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -41,6 +43,8 @@ public abstract class AbstractCreature {
     private Set<Spell> spells;
     /** Passive traits that effect the creature */
     private Set<Feature> features;
+    /** The set of items the creature possesses*/
+    private Set<Item> items;
 
     /**
      * Constructor
@@ -76,6 +80,7 @@ public abstract class AbstractCreature {
         this.actions = actions;
         this.spells = spells;
         this.features = features;
+        items = new HashSet<Item>();
     }
 
     /**
@@ -126,6 +131,20 @@ public abstract class AbstractCreature {
             throw new HitPointException("Cannot set current HP above HP maximum.");
         }
         cHitPoints = newHP;
+    }
+
+    public void addItem(Item i) {
+        items.add(i);
+        i.setOwner(this);
+    }
+
+    public void removeItem(Item i) {
+        items.remove(i);
+        i.setOwner(null);
+    }
+
+    public Set<Item> getItems() {
+        return items;
     }
 
     public String getName() {

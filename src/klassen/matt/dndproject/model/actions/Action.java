@@ -15,6 +15,16 @@ public class Action extends AbstractAction {
      * Constructor
      *
      * @param name      the name of the action
+     */
+    public Action(String name) {
+        super(name);
+        isLegendary = false;
+    }
+
+    /**
+     * Constructor
+     *
+     * @param name      the name of the action
      * @param effect    the actions's effect when invoked
      */
     public Action(String name, Effect effect) {

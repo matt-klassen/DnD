@@ -10,6 +10,10 @@ public abstract class AbstractAction {
     private String name;
     protected Effect effect;
 
+    public AbstractAction(String name) {
+        this.name = name;
+    }
+
     public AbstractAction(String name, Effect effect) {
         this.name = name;
         this.effect = effect;
