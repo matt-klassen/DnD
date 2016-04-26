@@ -25,6 +25,7 @@ public class Item extends AbstractAction {
         super(name, effect);
         this.owner = owner;
         this.isMagic = isMagic;
+        owner.addItem(this);
     }
 
     /**
