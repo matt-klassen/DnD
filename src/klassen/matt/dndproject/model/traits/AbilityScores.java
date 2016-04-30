@@ -24,9 +24,7 @@ public class AbilityScores {
         this.chaScore = chaScore;
     }
 
-    public void setStrScore(int newStrScore) {
-        strScore = newStrScore;
-    }
+    public void setStrScore(int newStrScore) { strScore = newStrScore; }
 
     public void setDexScore(int newDexScore) {
         dexScore = newDexScore;
