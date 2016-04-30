@@ -10,18 +10,18 @@ import java.util.Set;
 /**
  * Represents a collection of Monsters
  */
-public class MonsterManual implements Iterable<Monster> {
+public class MonsterManager implements Iterable<Monster> {
 
-    private static MonsterManual instance;
+    private static MonsterManager instance;
     private List<Monster> monsters;
 
-    private MonsterManual() {
+    private MonsterManager() {
         monsters = new ArrayList<Monster>();
     }
 
-    public static MonsterManual getInstance() {
+    public static MonsterManager getInstance() {
         if (instance == null) {
-            instance = new MonsterManual();
+            instance = new MonsterManager();
         }
         return instance;
     }

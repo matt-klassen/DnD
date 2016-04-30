@@ -41,6 +41,8 @@ public class Die {
     /**
      * Generates a random int within the range defined by
      * numOfDie to numOfDie * numOfSides
+     *
+     * @return the int result of the die roll
      */
     public int roll() {
         int result = 0;

@@ -1,5 +1,13 @@
 package klassen.matt.dndproject.ui;
 
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+import klassen.matt.dndproject.model.WorldDND;
 import klassen.matt.dndproject.model.actions.Action;
 import klassen.matt.dndproject.model.actions.Item;
 import klassen.matt.dndproject.model.actions.Spell;
@@ -11,40 +19,126 @@ import klassen.matt.dndproject.model.mechanics.Effect;
 import klassen.matt.dndproject.model.traits.AbilityScores;
 import klassen.matt.dndproject.model.traits.Feature;
 
-import javax.swing.JFrame;
-import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * The main UI window
  */
-public class DnDCombat extends JFrame {
+public class DnDCombat extends Application {
+
+    public static final int WIDTH = 800;
+    public static final int HEIGHT = 600;
+    public static final double VERTICAL_GAP = 8;
+    public static final double HORIZONTAL_GAP = 10;
+    public static final Insets LARGE_INSET = new Insets(10, 10, 10, 10);
+    public static final Insets SMALL_INSET = new Insets(4, 4, 4, 4);
+
+    private Stage window;
+    private Scene scene;
+    private GridPane grid;
+    private BorderPane layout;
+    private MenuBar menuBar;
+    private WorldDND world;
+    private VBox partyVBox;
+    private VBox monsterVBox;
+    private TextArea combatLog;
+    private VBox heroActionsVBox;
+    private VBox targetsVBox;
+    private VBox monsterActionsVBox;
+    private VBox customizeVBox;
+    private VBox pregenHeroVBox;
+    private VBox pregenMonsterVBox;
 
     private Hero pregen1;
     private Hero pregen2;
     private Hero pregen3;
     private Hero pregen4;
 
-    public DnDCombat() {
-        super("D&D Combat Sim v.0.1");
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        window = primaryStage;
         initHeroes();
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setUndecorated(true);
-        pack();
-        centerOnScreen();
-        setVisible(true);
+        initGrid();
+        initMenu();
+        initLayout();
+        initWindow();
     }
 
-    private void centerOnScreen() {
-        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation((screen.width - getWidth()) / 2, (screen.height - getHeight()) / 2);
+    private void initGrid() {
+        grid = new GridPane();
+        grid.setPadding(LARGE_INSET);
+        grid.setVgap(VERTICAL_GAP);
+        grid.setHgap(HORIZONTAL_GAP);
+        initGridItems();
+
+        grid.getChildren().addAll(partyVBox, monsterVBox, combatLog,
+                heroActionsVBox, targetsVBox, monsterActionsVBox,
+                customizeVBox, pregenHeroVBox, pregenMonsterVBox);
     }
 
-    private void initHeroes() {
+    private void initGridItems() {
+        partyVBox = new GroupBox("Party");
+        monsterVBox = new GroupBox("Monsters");
+        combatLog = new CombatLog();
+
+
+        heroActionsVBox = new VBox();
+        targetsVBox = new VBox();
+        monsterActionsVBox = new VBox();
+        customizeVBox = new VBox();
+        pregenHeroVBox = new VBox();
+        pregenMonsterVBox = new VBox();
+
+        GridPane.setConstraints(partyVBox, 0, 0);
+        GridPane.setMargin(partyVBox, new Insets(8, 6, 8, 20));
+        GridPane.setConstraints(monsterVBox, 1, 0);
+        GridPane.setConstraints(combatLog, 2, 0);
+        GridPane.setConstraints(heroActionsVBox, 0, 1);
+        GridPane.setConstraints(targetsVBox, 1, 1);
+        GridPane.setConstraints(monsterActionsVBox, 2, 1);
+        GridPane.setConstraints(customizeVBox, 0, 2);
+        GridPane.setConstraints(pregenHeroVBox, 1, 2);
+        GridPane.setConstraints(pregenMonsterVBox, 2, 2 );
+
+    }
+
+    private void initMenu() {
+        MenuItem newFile = new MenuItem("_New");
+        // MenuItem saveFile = new MenuItem("Save");
+        // MenuItem loadFile = new MenuItem("Load");
+        Menu fileMenu = new Menu("_File");
+        fileMenu.getItems().addAll(newFile); // TODO: add save/load functionality
+
+        MenuItem newHero = new MenuItem("New _Hero...");
+        MenuItem newMonster = new MenuItem("New _Monster...");
+        Menu customizeMenu = new Menu("_Customize");
+        customizeMenu.getItems().addAll(newHero, newMonster);
+
+        // Menu optionsMenu = new Menu("_Options"); // TODO: style option functionality
+
+        menuBar = new MenuBar();
+        menuBar.getMenus().addAll(fileMenu, customizeMenu);
+    }
+
+    private void initLayout() {
+        layout = new BorderPane();
+        layout.setTop(menuBar);
+        layout.setCenter(grid);
+    }
+
+    private void initWindow() {
+        scene = new Scene(layout, WIDTH, HEIGHT);
+        window.setScene(scene);
+        window.setTitle("D&D Combat Sim v0.1");
+        window.show();
+    }
+
+    public void initHeroes() {
         AbilityScores ascores1 = new AbilityScores(15, 13, 14, 8, 12, 10);
         AbilityScores ascores2 = new AbilityScores(8, 12, 13, 15, 10, 11);
         AbilityScores ascores3 = new AbilityScores(10, 15, 12, 8, 14, 13);
@@ -82,7 +176,7 @@ public class DnDCombat extends JFrame {
         }
     }
 
-    private Set<Action> initBasicActions() {
+    public Set<Action> initBasicActions() {
         Effect punch = new Effect(new Die("1d1"), "bludgeoning");
         Action punchAction = new Action("punch", punch);
         Action dash = new Action("Dash");
@@ -100,7 +194,7 @@ public class DnDCombat extends JFrame {
         return basicActions;
     }
 
-    private Set<Spell> initStarterSpells() {
+    public Set<Spell> initStarterSpells() {
         Set<Spell> basicSpells = new HashSet<Spell>();
         try {
             Effect mm = new Effect(new Die("3d4"), "force");

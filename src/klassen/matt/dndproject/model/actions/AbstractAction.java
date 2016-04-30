@@ -19,6 +19,12 @@ public abstract class AbstractAction {
         this.effect = effect;
     }
 
+    /**
+     * Invokes the action, returning the action's effect or
+     * null if the action has no effect.
+     *
+     * @return the effect of the action
+     */
     public Effect invokeAction() { return effect; } // revise as necessary with change of effect class
 
     public String getName() {

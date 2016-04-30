@@ -21,7 +21,6 @@ public class Hero extends AbstractCreature {
 
     private String background;
     private int experience;
-    private List<Item> items;
 
     private static Levels[] levels;
 
@@ -52,10 +51,9 @@ public class Hero extends AbstractCreature {
         super(name, creatureType, armorClass, hitPoints, speed, flySpeed,
                 abilityScores, senses, languages, actions, spells, features);
 
+        initLevels();
         setLevel(level);
         this.heroClass = heroClass;
-        this.items = new ArrayList<Item>();
-        initLevels();
     }
 
 
@@ -108,12 +106,6 @@ public class Hero extends AbstractCreature {
         int newExp = levels[level - 1].getExpThreshold();
         experience = newExp;
     }
-
-    public void addItem(Item item) {
-        items.add(item);
-    }
-
-    public void removeItem(Item item) { }
 
     public int getLevel() {
         return level;

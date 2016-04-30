@@ -8,14 +8,12 @@ import klassen.matt.dndproject.model.creature.exception.IllegalValueException;
 import klassen.matt.dndproject.model.traits.AbilityScores;
 import klassen.matt.dndproject.model.traits.Feature;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Represents a creature
  */
-public abstract class AbstractCreature {
+public abstract class AbstractCreature extends Observable {
 
     /** The creature's name */
     private String name;
@@ -45,6 +43,8 @@ public abstract class AbstractCreature {
     private Set<Feature> features;
     /** The set of items the creature possesses*/
     private Set<Item> items;
+    /** Whether the creature is alive (true) or dead (false) */
+    private boolean alive;
 
     /**
      * Constructor
@@ -81,6 +81,8 @@ public abstract class AbstractCreature {
         this.spells = spells;
         this.features = features;
         items = new HashSet<Item>();
+        alive = true;
+        // TODO: Observers for dead/alive status
     }
 
     /**
@@ -194,5 +196,15 @@ public abstract class AbstractCreature {
     public Set<Feature> getFeatures() {
         return Collections.unmodifiableSet(features);
     }
+
+    public boolean getAlive() { return alive; }
+
+    public void setDead() {
+        alive = false;
+        this.setChanged();
+        this.notifyObservers();
+    }
+
+    public void setAlive() { alive = true; }
 
 }
