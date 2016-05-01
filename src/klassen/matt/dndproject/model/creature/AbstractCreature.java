@@ -99,6 +99,10 @@ public abstract class AbstractCreature extends Observable {
             setCHitPoints(newHP);
         } catch (HitPointException e) {
             cHitPoints = 0;
+        } finally {
+            if (cHitPoints == 0) {
+                alive = false;
+            }
         }
     }
 

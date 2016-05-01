@@ -3,6 +3,7 @@ package klassen.matt.dndproject.model.creature;
 
 import klassen.matt.dndproject.model.actions.Action;
 import klassen.matt.dndproject.model.actions.Spell;
+import klassen.matt.dndproject.model.creature.exception.IllegalValueException;
 import klassen.matt.dndproject.model.traits.AbilityScores;
 import klassen.matt.dndproject.model.traits.Feature;
 

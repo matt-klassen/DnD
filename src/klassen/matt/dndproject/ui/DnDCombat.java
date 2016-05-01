@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import klassen.matt.dndproject.model.WorldDND;
 import klassen.matt.dndproject.model.actions.Action;
@@ -23,16 +24,23 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * @author Matt Klassen <matt.klassen@yahoo.ca>
+ * @version 0.1
+ * @since 2016-05-01
+ *
  * The main UI window
  */
 public class DnDCombat extends Application {
-
+    // TODO add Javadoc
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
     public static final double VERTICAL_GAP = 8;
     public static final double HORIZONTAL_GAP = 10;
     public static final Insets LARGE_INSET = new Insets(10, 10, 10, 10);
     public static final Insets SMALL_INSET = new Insets(4, 4, 4, 4);
+    private static final BorderStroke[] BORDERS = { new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,
+            new CornerRadii(1), BorderStroke.THIN) };
+    public static final Border BORDER = new Border(BORDERS);
 
     private Stage window;
     private Scene scene;
@@ -40,15 +48,12 @@ public class DnDCombat extends Application {
     private BorderPane layout;
     private MenuBar menuBar;
     private WorldDND world;
-    private VBox partyVBox;
-    private VBox monsterVBox;
+    private GroupBox partyVBox;
+    private GroupBox monsterVBox;
     private TextArea combatLog;
-    private VBox heroActionsVBox;
-    private VBox targetsVBox;
-    private VBox monsterActionsVBox;
-    private VBox customizeVBox;
-    private VBox pregenHeroVBox;
-    private VBox pregenMonsterVBox;
+    private ActionBox heroActionsVBox;
+    private ActionBox monsterActionsVBox;
+    private PregenBox pregenVBox;
 
     private Hero pregen1;
     private Hero pregen2;
@@ -77,34 +82,35 @@ public class DnDCombat extends Application {
         initGridItems();
 
         grid.getChildren().addAll(partyVBox, monsterVBox, combatLog,
-                heroActionsVBox, targetsVBox, monsterActionsVBox,
-                customizeVBox, pregenHeroVBox, pregenMonsterVBox);
+                heroActionsVBox, monsterActionsVBox, pregenVBox);
     }
 
     private void initGridItems() {
-        partyVBox = new GroupBox("Party");
+        // Creating grid items
+        partyVBox = new GroupBox("Heroes");
         monsterVBox = new GroupBox("Monsters");
         combatLog = new CombatLog();
+        heroActionsVBox = new ActionBox();
+        monsterActionsVBox = new ActionBox();
+        pregenVBox = new PregenBox();
+        partyVBox.pair(heroActionsVBox);
+        monsterVBox.pair(monsterActionsVBox);
 
-
-        heroActionsVBox = new VBox();
-        targetsVBox = new VBox();
-        monsterActionsVBox = new VBox();
-        customizeVBox = new VBox();
-        pregenHeroVBox = new VBox();
-        pregenMonsterVBox = new VBox();
-
+        // Setting grid margins and constraints
         GridPane.setConstraints(partyVBox, 0, 0);
-        GridPane.setMargin(partyVBox, new Insets(8, 6, 8, 20));
+        GridPane.setMargin(partyVBox, new Insets(0, 0, 0, 10));
         GridPane.setConstraints(monsterVBox, 1, 0);
         GridPane.setConstraints(combatLog, 2, 0);
         GridPane.setConstraints(heroActionsVBox, 0, 1);
-        GridPane.setConstraints(targetsVBox, 1, 1);
-        GridPane.setConstraints(monsterActionsVBox, 2, 1);
-        GridPane.setConstraints(customizeVBox, 0, 2);
-        GridPane.setConstraints(pregenHeroVBox, 1, 2);
-        GridPane.setConstraints(pregenMonsterVBox, 2, 2 );
+        GridPane.setMargin(heroActionsVBox, new Insets(0, 0, 0, 10));
+        GridPane.setConstraints(monsterActionsVBox, 1, 1);
+        GridPane.setConstraints(pregenVBox, 2, 1);
 
+        // TODO testing area below
+        partyVBox.addCreature(pregen1);
+        partyVBox.addCreature(pregen2);
+        partyVBox.addCreature(pregen3);
+        partyVBox.addCreature(pregen4);
     }
 
     private void initMenu() {
@@ -137,6 +143,8 @@ public class DnDCombat extends Application {
         window.setTitle("D&D Combat Sim v0.1");
         window.show();
     }
+
+    // TODO move non-ui & pregen character behaviours to WorldDnD class
 
     public void initHeroes() {
         AbilityScores ascores1 = new AbilityScores(15, 13, 14, 8, 12, 10);
@@ -178,7 +186,7 @@ public class DnDCombat extends Application {
 
     public Set<Action> initBasicActions() {
         Effect punch = new Effect(new Die("1d1"), "bludgeoning");
-        Action punchAction = new Action("punch", punch);
+        Action punchAction = new Action("Punch", punch);
         Action dash = new Action("Dash");
         Action disengage = new Action("Disengage");
         Action dodge = new Action("Dodge");

@@ -1,6 +1,8 @@
 package klassen.matt.dndproject.model.mechanics;
 
 import klassen.matt.dndproject.model.creature.AbstractCreature;
+import klassen.matt.dndproject.model.creature.Hero;
+import klassen.matt.dndproject.model.creature.Monster;
 
 import java.util.List;
 
@@ -9,32 +11,32 @@ import java.util.List;
  */
 public class Battle {
 
-    /** The first group of creatures doing battle, oppenents of the second */
-    private List<AbstractCreature> firstGroup;
+    /** The first group of creatures doing battle, opponents of the second */
+    private List<Hero> heroes;
     /** The second group of creatures doing battle, opponents of the first */
-    private List<AbstractCreature> secondGroup;
+    private List<Monster> monsters;
     /** The currently selected creature from the first group */
-    private AbstractCreature firstSelectedCreature;
+    private Hero selectedHero;
     /** The currently selected creature from the second group */
-    private AbstractCreature secondSelectedCreature;
+    private Monster selectedMonster;
 
     /**
      * Constructor
      *
-     * @param firstGroup the first group in the battle
-     * @param secondGroup the second group in the battle*
+     * @param heroes the first group in the battle (the heroes)
+     * @param monsters the second group in the battle (the monsters)
      */
-    public Battle(List<AbstractCreature> firstGroup, List<AbstractCreature> secondGroup) {
-        this.firstGroup = firstGroup;
-        this.secondGroup = secondGroup;
+    public Battle(List<Hero> heroes, List<Monster> monsters) {
+        this.heroes = heroes;
+        this.monsters = monsters;
     }
 
-    public List<AbstractCreature> getFirstGroup() {
-        return firstGroup;
+    public List<Hero> getHeroes() {
+        return heroes;
     }
 
-    public List<AbstractCreature> getSecondGroup() {
-        return secondGroup;
+    public List<Monster> getMonsters() {
+        return monsters;
     }
 
     /**
@@ -44,19 +46,19 @@ public class Battle {
      * @param creature the creature to be selected
      */
     public void selectCreature(AbstractCreature creature) {
-        if (firstGroup.contains(creature)) {
-            firstSelectedCreature = creature;
-        } else if (secondGroup.contains(creature)) {
-            secondSelectedCreature = creature;
+        if (heroes.contains(creature)) {
+            selectedHero = (Hero) creature;
+        } else if (monsters.contains(creature)) {
+            selectedMonster = (Monster) creature;
         }
     }
 
-    public AbstractCreature getFirstSelectedCreature() {
-        return firstSelectedCreature;
+    public AbstractCreature getSelectedHero() {
+        return selectedHero;
     }
 
-    public AbstractCreature getSecondSelectedCreature() {
-        return secondSelectedCreature;
+    public AbstractCreature getSelectedMonster() {
+        return selectedMonster;
     }
 
 }
