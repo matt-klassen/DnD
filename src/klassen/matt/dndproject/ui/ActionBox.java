@@ -13,49 +13,29 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Matt on 4/30/2016.
+ * A JavaFX VBox that contains action data parsed from selected member
+ * of an associated GroupBox
  */
 public class ActionBox extends VBox {
-    // TODO add Javadoc
+
     public static final int HEIGHT = 260;
     public static final int WIDTH = 220;
 
+    private DnDCombat parent;
     private Map<String, Action> actions;
     private ListView<String> actionListView;
     private Action selectedAction;
     private GroupBox pairedBox;
+    private VBox innerBox;
+    private HBox buttonArea;
+    private Label label;
 
-    public ActionBox() {
+    public ActionBox(DnDCombat parent) {
         super();
+        this.parent = parent;
         actions = new HashMap<>();
-        this.setSpacing(10);
-        this.setPadding(DnDCombat.SMALL_INSET);
-        this.setMaxHeight(HEIGHT);
-        this.setMinHeight(HEIGHT);
-        this.setMinWidth(WIDTH);
-        this.setMaxWidth(WIDTH);
-        this.setBorder(DnDCombat.BORDER);
-
-        VBox innerBox = new VBox();
-
-        // ListView area
-        actionListView = new ListView<>();
-        actionListView.setMaxHeight(200);
-
-        // Buttons
-        Button useActionButton = new Button("Use Action");
-        useActionButton.setPadding(DnDCombat.SMALL_INSET);
-
-        // Selection listening
-        initListener();
-
-        Label label = new Label("Actions");
-        label.setPadding(DnDCombat.SMALL_INSET);
-        HBox buttonArea = new HBox();
-        buttonArea.getChildren().add(useActionButton);
-        buttonArea.setPadding(DnDCombat.LARGE_INSET);
-        innerBox.getChildren().add(actionListView);
-        this.getChildren().addAll(label, innerBox, buttonArea);
+        initDimensions();
+        initChildren();
     }
 
     public void addAction(Action action) {
@@ -63,13 +43,6 @@ public class ActionBox extends VBox {
             actions.put(action.getName(), action);
             actionListView.getItems().add(action.getName());
         }
-    }
-
-    private void initListener() {
-        // Selection listening
-        actionListView.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
-            setSelectedAction(actions.get(newValue));
-        } );
     }
 
     public void removeAction(Action action) {
@@ -94,4 +67,52 @@ public class ActionBox extends VBox {
         actionListView.getItems().clear();
     }
 
+    private void initChildren() {
+        initLabel();
+        initInnerBox();
+        initButtons();
+        this.getChildren().addAll(label, innerBox, buttonArea);
+        initListener();
+    }
+
+    private void initLabel() {
+        label = new Label("Actions");
+        label.setPadding(DnDCombat.SMALL_INSET);
+    }
+
+    private void initInnerBox() {
+        initActionListView();
+        innerBox = new VBox();
+        innerBox.getChildren().add(actionListView);
+    }
+
+    private void initButtons() {
+        Button useActionButton = new Button("Use Action");
+        useActionButton.setPadding(DnDCombat.SMALL_INSET);
+        buttonArea = new HBox();
+        buttonArea.getChildren().add(useActionButton);
+        buttonArea.setPadding(DnDCombat.LARGE_INSET);
+    }
+
+    private void initActionListView() {
+        actionListView = new ListView<>();
+        actionListView.setMaxHeight(200);
+    }
+
+    private void initDimensions() {
+        this.setSpacing(10);
+        this.setPadding(DnDCombat.SMALL_INSET);
+        this.setMaxHeight(HEIGHT);
+        this.setMinHeight(HEIGHT);
+        this.setMinWidth(WIDTH);
+        this.setMaxWidth(WIDTH);
+        this.setBorder(DnDCombat.BORDER);
+    }
+
+    private void initListener() {
+        // Selection listening
+        actionListView.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
+            setSelectedAction(actions.get(newValue));
+        } );
+    }
 }

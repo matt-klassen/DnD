@@ -10,8 +10,11 @@ public class PregenBox extends VBox {
     public static final int WIDTH = 300;
     public static final int HEIGHT = 260;
 
-    public PregenBox() {
+    private DnDCombat parent;
+
+    public PregenBox(DnDCombat parent) {
         super();
+        this.parent = parent;
         this.setBorder(DnDCombat.BORDER);
         this.setMinHeight(HEIGHT);
         this.setMaxHeight(HEIGHT);
