@@ -74,29 +74,44 @@ public class DnDCombat extends Application {
         initWindow();
     }
 
+    public void createHero() {
+        NewHeroPopup.display();
+    }
+
+    public void createMonster() {
+
+    }
+
     private void initGrid() {
         grid = new GridPane();
-        grid.setPadding(LARGE_INSET);
-        grid.setVgap(VERTICAL_GAP);
-        grid.setHgap(HORIZONTAL_GAP);
+        initGridDimensions();
         initGridItems();
-
         grid.getChildren().addAll(partyVBox, monsterVBox, combatLog,
                 heroActionsVBox, monsterActionsVBox, pregenVBox);
     }
 
-    private void initGridItems() {
-        // Creating grid items
-        partyVBox = new GroupBox("Heroes");
-        monsterVBox = new GroupBox("Monsters");
-        combatLog = new CombatLog();
-        heroActionsVBox = new ActionBox();
-        monsterActionsVBox = new ActionBox();
-        pregenVBox = new PregenBox();
-        partyVBox.pair(heroActionsVBox);
-        monsterVBox.pair(monsterActionsVBox);
+    private void initGridDimensions() {
+        grid.setPadding(LARGE_INSET);
+        grid.setVgap(VERTICAL_GAP);
+        grid.setHgap(HORIZONTAL_GAP);
+    }
 
-        // Setting grid margins and constraints
+    private void initGridItems() {
+        heroActionsVBox = new ActionBox(this);
+        monsterActionsVBox = new ActionBox(this);
+        partyVBox = new GroupBox("Heroes", heroActionsVBox, this);
+        monsterVBox = new GroupBox("Monsters", monsterActionsVBox, this);
+        combatLog = new CombatLog(this);
+        pregenVBox = new PregenBox(this);
+        initItemDimensions();
+        // TODO testing area below
+        partyVBox.addCreature(pregen1);
+        partyVBox.addCreature(pregen2);
+        partyVBox.addCreature(pregen3);
+        partyVBox.addCreature(pregen4);
+    }
+
+    private void initItemDimensions() {
         GridPane.setConstraints(partyVBox, 0, 0);
         GridPane.setMargin(partyVBox, new Insets(0, 0, 0, 10));
         GridPane.setConstraints(monsterVBox, 1, 0);
@@ -105,30 +120,28 @@ public class DnDCombat extends Application {
         GridPane.setMargin(heroActionsVBox, new Insets(0, 0, 0, 10));
         GridPane.setConstraints(monsterActionsVBox, 1, 1);
         GridPane.setConstraints(pregenVBox, 2, 1);
-
-        // TODO testing area below
-        partyVBox.addCreature(pregen1);
-        partyVBox.addCreature(pregen2);
-        partyVBox.addCreature(pregen3);
-        partyVBox.addCreature(pregen4);
     }
 
     private void initMenu() {
-        MenuItem newFile = new MenuItem("_New");
-        // MenuItem saveFile = new MenuItem("Save");
-        // MenuItem loadFile = new MenuItem("Load");
-        Menu fileMenu = new Menu("_File");
-        fileMenu.getItems().addAll(newFile); // TODO: add save/load functionality
-
-        MenuItem newHero = new MenuItem("New _Hero...");
-        MenuItem newMonster = new MenuItem("New _Monster...");
-        Menu customizeMenu = new Menu("_Customize");
-        customizeMenu.getItems().addAll(newHero, newMonster);
-
-        // Menu optionsMenu = new Menu("_Options"); // TODO: style option functionality
-
+        Menu fileMenu = createFileMenu();
+        Menu customizeMenu = createCustomizeMenu();
         menuBar = new MenuBar();
         menuBar.getMenus().addAll(fileMenu, customizeMenu);
+    }
+
+    private Menu createFileMenu() {
+        Menu fileMenu = new Menu("_File");
+        MenuItem newFile = new MenuItem("_New");
+        fileMenu.getItems().addAll(newFile);
+        return fileMenu;
+    }
+
+    private Menu createCustomizeMenu() {
+        Menu customizeMenu = new Menu("_Customize");
+        MenuItem newHero = new MenuItem("New _Hero...");
+        MenuItem newMonster = new MenuItem("New _Monster...");
+        customizeMenu.getItems().addAll(newHero, newMonster);
+        return customizeMenu;
     }
 
     private void initLayout() {
