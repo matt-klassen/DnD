@@ -1,12 +1,10 @@
 package klassen.matt.dndproject.tests;
 
 import klassen.matt.dndproject.model.actions.Action;
-import klassen.matt.dndproject.model.actions.Spell;
 import klassen.matt.dndproject.model.creature.exception.IllegalValueException;
 import klassen.matt.dndproject.model.mechanics.Die;
 import klassen.matt.dndproject.model.mechanics.Effect;
 import klassen.matt.dndproject.model.traits.AbilityScores;
-import klassen.matt.dndproject.model.traits.Feature;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
@@ -27,14 +25,8 @@ public class MonsterTest {
     @Before
     public void setUp() {
         AbilityScores as = new AbilityScores(10, 12, 10, 8, 10, 10);
-        Set<String> sensesM = new HashSet<>();
-        sensesM.add("Darkvision");
-        Set<String> languagesM = new HashSet<>();
-        languagesM.add("Draconic");
         Set<Action> actionsM = initActions();
-        Set<Spell> spellsM = new HashSet<>();
-        Set<Feature> featuresM = new HashSet<>();
-        testMonster = new Monster("Kobold", "draconic", 10, 8, 30, 0, as, sensesM, languagesM, actionsM, spellsM, featuresM, 1, 50);
+        testMonster = new Monster("Kobold", "draconic", 10, 8, 30, as, actionsM, 1, 50);
     }
 
     @Test

@@ -1,4 +1,4 @@
-package klassen.matt.dndproject.model.creature;
+package klassen.matt.dndproject.model.traits;
 
 /**
  * Represents levels one to twenty for player characters. Each level has the

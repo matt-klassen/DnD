@@ -4,10 +4,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.*;
+import klassen.matt.dndproject.model.actions.AbstractAction;
 import klassen.matt.dndproject.model.actions.Action;
+import klassen.matt.dndproject.model.actions.Item;
 import klassen.matt.dndproject.model.creature.AbstractCreature;
+import klassen.matt.dndproject.ui.exception.TooManyCreaturesException;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,6 +22,7 @@ public class GroupBox extends VBox {
 
     public static final int HEIGHT = 200;
     public static final int WIDTH = 220;
+    public static final int C_SIZE_LIMIT = 4;
 
     private DnDCombat parent;
     private String boxName;
@@ -39,21 +44,31 @@ public class GroupBox extends VBox {
         initChildren();
     }
 
-    public void addCreature(AbstractCreature creature) {
-        if (!creatures.containsValue(creature)) {
-            creatures.put(creature.getName(), creature);
-            listView.getItems().add(creature.getName());
+    public void addCreature(AbstractCreature creature) throws TooManyCreaturesException {
+        if (creatures.size() < 4) {
+            if (!creatures.containsValue(creature)) {
+                creatures.put(creature.getName(), creature);
+                listView.getItems().add(creature.getName());
+            }
+        } else {
+            throw new TooManyCreaturesException();
         }
     }
 
     public void removeCreature(AbstractCreature creature) {
-        creatures.remove(creature.getName());
-        listView.getItems().remove(creature.getName());
-        clearSelection();
+        if (creature != null) { // otherwise simply do nothing
+            creatures.remove(creature.getName());
+            listView.getItems().remove(creature.getName());
+            clearSelection();
+        }
     }
 
     public AbstractCreature getSelectedCreature() {
         return selectedCreature;
+    }
+
+    public int getCreaturesSize() {
+        return creatures.size();
     }
 
     public void setSelectedCreature(AbstractCreature creature) {
@@ -99,9 +114,9 @@ public class GroupBox extends VBox {
 
     private void newButtonClick() {
         if (isHeroGroupBox()) {
-            parent.createHero();
+            parent.heroPopup();
         } else {
-            parent.createMonster();
+            parent.monsterPopup();
         }
     }
 
@@ -143,10 +158,13 @@ public class GroupBox extends VBox {
     }
 
     private void generateSelectedCreatureActions() {
-        Set<Action> creatureActions = selectedCreature.getActions();
+        Set<AbstractAction> creatureActions = new HashSet<>();
+        creatureActions.addAll(selectedCreature.getActions());
+        creatureActions.addAll(selectedCreature.getItems());
+        
         pairedBox.clear();
-        for (Action act : creatureActions) {
-            pairedBox.addAction(act);
+        for (AbstractAction action : creatureActions) {
+            pairedBox.addAction(action);
         }
     }
 

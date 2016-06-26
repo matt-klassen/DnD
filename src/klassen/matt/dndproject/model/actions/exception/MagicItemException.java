@@ -5,9 +5,12 @@ package klassen.matt.dndproject.model.actions.exception;
  */
 public class MagicItemException extends Exception {
 
-    public MagicItemException() { super(); }
+    public MagicItemException() {
+        super();
+    }
 
-    public MagicItemException(String msg) { super(msg); }
-
+    public MagicItemException(String message) {
+        super(message);
+    }
 
 }

@@ -1,14 +1,10 @@
 package klassen.matt.dndproject.model.creature;
 
 import klassen.matt.dndproject.model.actions.Action;
-import klassen.matt.dndproject.model.actions.Item;
-import klassen.matt.dndproject.model.actions.Spell;
 import klassen.matt.dndproject.model.creature.exception.LevelException;
 import klassen.matt.dndproject.model.traits.AbilityScores;
-import klassen.matt.dndproject.model.traits.Feature;
+import klassen.matt.dndproject.model.traits.Levels;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -18,10 +14,8 @@ public class Hero extends AbstractCreature {
 
     private int level;
     private String heroClass;
-
     private String background;
     private int experience;
-
     private static Levels[] levels;
 
     /**
@@ -32,24 +26,18 @@ public class Hero extends AbstractCreature {
      * @param armorClass    the creature's innate (unmodified) armor class
      * @param hitPoints     the creature's innate hit point total (unmodified)
      * @param speed         the creature's innate speed (unmodified)
-     * @param flySpeed      the creature's innate flying speed (unmodified)
      * @param abilityScores the creature's set of base ability scores
-     * @param senses        the set of the creature's senses
-     * @param languages     the set of languages understood and spoken by the creature
      * @param actions       the set of actions available to the creature
-     * @param spells        the set of spells the creature knows
-     * @param features      the set of features the creature possesses
      * @param level         the level of the hero
      * @param heroClass     the hero's class
      */
-    public Hero(String name, String creatureType, int armorClass, int hitPoints,
-                int speed, int flySpeed, AbilityScores abilityScores,
-                Set<String> senses, Set<String> languages, Set<Action> actions,
-                Set<Spell> spells, Set<Feature> features,
-                int level, String heroClass) throws LevelException {
+    public Hero(String name, String creatureType, int armorClass,
+                int hitPoints, int speed, AbilityScores abilityScores,
+                Set<Action> actions, int level, String heroClass)
+            throws LevelException {
 
-        super(name, creatureType, armorClass, hitPoints, speed, flySpeed,
-                abilityScores, senses, languages, actions, spells, features);
+        super(name, creatureType, armorClass, hitPoints,
+                speed, abilityScores, actions);
 
         initLevels();
         setLevel(level);
@@ -68,7 +56,6 @@ public class Hero extends AbstractCreature {
      * @param experienceGained  the amount of experience gained
      */
     public void gainExperience(int experienceGained) {
-
         experience += experienceGained;
         checkLevel();
     }
@@ -156,7 +143,7 @@ public class Hero extends AbstractCreature {
      * pool of experience as it is.
      */
     private void levelFromExperience() {
-        level += 1;
+        level++;
     }
 
 }

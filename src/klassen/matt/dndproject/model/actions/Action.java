@@ -10,6 +10,8 @@ public class Action extends AbstractAction {
 
     /** action is classified as a legendary action if true */
     private boolean isLegendary;
+    /** action is classified as a spell if true */
+    private boolean isSpell;
 
     /**
      * Constructor
@@ -39,12 +41,15 @@ public class Action extends AbstractAction {
      * @param effect        the actions's effect when invoked
      * @param isLegendary   the action's legendary status
      */
-    public Action(String name, Effect effect, boolean isLegendary) {
+    public Action(String name, Effect effect, boolean isLegendary, boolean isSpell) {
         super(name, effect);
         this.isLegendary = isLegendary;
+        this.isSpell = isSpell;
     }
 
     public boolean getIsLegendary() {
         return isLegendary;
     }
+
+    public boolean getIsSpell() { return isSpell; }
 }

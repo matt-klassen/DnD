@@ -2,11 +2,9 @@ package klassen.matt.dndproject.model.creature;
 
 import klassen.matt.dndproject.model.actions.Action;
 import klassen.matt.dndproject.model.actions.Item;
-import klassen.matt.dndproject.model.actions.Spell;
 import klassen.matt.dndproject.model.creature.exception.HitPointException;
 import klassen.matt.dndproject.model.creature.exception.IllegalValueException;
 import klassen.matt.dndproject.model.traits.AbilityScores;
-import klassen.matt.dndproject.model.traits.Feature;
 
 import java.util.*;
 
@@ -27,21 +25,11 @@ public abstract class AbstractCreature extends Observable {
     private int cHitPoints;
     /** Movement speed */
     private int speed;
-    /** Movement speed while flying, 0 if creature cannot fly */
-    private int flySpeed;
     /** The creature's innate ability scores */
     private AbilityScores abilityScores;
-    /** Special seeing, hearing, sensing traits */
-    private Set<String> senses;
-    /** Set of languages the creature speaks or understands */
-    private Set<String> languages;
     /** The actions the creature can perform */
     private Set<Action> actions;
     /** The spells the creature knows */
-    private Set<Spell> spells;
-    /** Passive traits that effect the creature */
-    private Set<Feature> features;
-    /** The set of items the creature possesses*/
     private Set<Item> items;
     /** Whether the creature is alive (true) or dead (false) */
     private boolean alive;
@@ -54,32 +42,21 @@ public abstract class AbstractCreature extends Observable {
      * @param armorClass        the creature's innate (unmodified) armor class
      * @param hitPoints         the creature's innate hit point total (unmodified)
      * @param speed             the creature's innate speed (unmodified)
-     * @param flySpeed          the creature's innate flying speed (unmodified)
      * @param abilityScores     the creature's set of base ability scores
-     * @param senses            the set of the creature's senses
-     * @param languages         the set of languages understood and spoken by the creature
      * @param actions           the set of actions available to the creature
-     * @param spells            the set of spells the creature knows
-     * @param features          the set of features the creature possesses
      */
-    public AbstractCreature(String name, String creatureType, int armorClass,
-                            int hitPoints, int speed, int flySpeed,
-                            AbilityScores abilityScores, Set<String> senses,
-                            Set<String> languages, Set<Action> actions,
-                            Set<Spell> spells, Set<Feature> features) {
+    public AbstractCreature(String name, String creatureType,
+                            int armorClass, int hitPoints, int speed,
+                            AbilityScores abilityScores,
+                            Set<Action> actions) {
         this.name = name;
         this.creatureType = creatureType;
         this.armorClass = armorClass;
         this.hitPoints = hitPoints;
         cHitPoints = hitPoints;
         this.speed = speed;
-        this.flySpeed = flySpeed;
         this.abilityScores = abilityScores;
-        this.senses = senses;
-        this.languages = languages;
         this.actions = actions;
-        this.spells = spells;
-        this.features = features;
         items = new HashSet<Item>();
         alive = true;
         // TODO: Observers for dead/alive status
@@ -139,6 +116,18 @@ public abstract class AbstractCreature extends Observable {
         cHitPoints = newHP;
     }
 
+    /**
+     * Changes the alive/dead status of the creature, where
+     * the creature is alive if true, dead if false
+     *
+     * @param alive the new alive status for the creature
+     */
+    public void setAlive(boolean alive) {
+        this.alive = alive;
+        this.setChanged();
+        this.notifyObservers();
+    }
+
     public void addItem(Item i) {
         items.add(i);
         i.setOwner(this);
@@ -175,40 +164,13 @@ public abstract class AbstractCreature extends Observable {
         return speed;
     }
 
-    public int getFlySpeed() {
-        return flySpeed;
-    }
-
     public AbilityScores getAbilityScores() {
         return abilityScores;
     }
-
-    public Set<String> getSenses() {
-        return Collections.unmodifiableSet(senses);
-    }
-
-    public Set<String> getLanguages() {
-        return Collections.unmodifiableSet(languages);
-    }
-
-    public Set<Spell> getSpells() { return Collections.unmodifiableSet(spells); }
 
     public Set<Action> getActions() {
         return Collections.unmodifiableSet(actions);
     }
 
-    public Set<Feature> getFeatures() {
-        return Collections.unmodifiableSet(features);
-    }
-
     public boolean getAlive() { return alive; }
-
-    public void setDead() {
-        alive = false;
-        this.setChanged();
-        this.notifyObservers();
-    }
-
-    public void setAlive() { alive = true; }
-
 }

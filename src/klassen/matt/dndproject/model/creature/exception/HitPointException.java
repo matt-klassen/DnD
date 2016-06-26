@@ -5,8 +5,6 @@ package klassen.matt.dndproject.model.creature.exception;
  */
 public class HitPointException extends IllegalValueException {
 
-    public HitPointException() { super(); }
-
     public HitPointException(String msg) {
         super(msg);
     }
