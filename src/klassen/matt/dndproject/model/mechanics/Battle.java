@@ -60,5 +60,5 @@ public class Battle {
     public AbstractCreature getSelectedMonster() {
         return selectedMonster;
     }
-
+//TODO evaluate if I need this class even...
 }

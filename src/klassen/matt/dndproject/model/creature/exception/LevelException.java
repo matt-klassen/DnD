@@ -9,8 +9,8 @@ public class LevelException extends IllegalValueException {
         super();
     }
 
-    public LevelException(String msg) {
-        super(msg);
+    public LevelException(String message) {
+        super(message);
     }
 
 }

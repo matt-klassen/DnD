@@ -5,10 +5,11 @@ package klassen.matt.dndproject.model.creature.exception;
  */
 public class IllegalValueException extends Exception {
 
-    public IllegalValueException() { super(); }
-
-    public IllegalValueException(String msg) {
-        super(msg);
+    public IllegalValueException() {
+        super();
     }
 
+    public IllegalValueException(String message) {
+        super(message);
+    }
 }

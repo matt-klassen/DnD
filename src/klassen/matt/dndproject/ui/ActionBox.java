@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import klassen.matt.dndproject.model.actions.AbstractAction;
 import klassen.matt.dndproject.model.actions.Action;
 
 import java.util.ArrayList;
@@ -22,9 +23,9 @@ public class ActionBox extends VBox {
     public static final int WIDTH = 220;
 
     private DnDCombat parent;
-    private Map<String, Action> actions;
+    private Map<String, AbstractAction> actions;
     private ListView<String> actionListView;
-    private Action selectedAction;
+    private AbstractAction selectedAction;
     private GroupBox pairedBox;
     private VBox innerBox;
     private HBox buttonArea;
@@ -38,7 +39,7 @@ public class ActionBox extends VBox {
         initChildren();
     }
 
-    public void addAction(Action action) {
+    public void addAction(AbstractAction action) {
         if (!actions.containsValue(action)) {
             actions.put(action.getName(), action);
             actionListView.getItems().add(action.getName());
@@ -50,11 +51,11 @@ public class ActionBox extends VBox {
         actionListView.getItems().remove(action.getName());
     }
 
-    public Action getSelectedAction() {
+    public AbstractAction getSelectedAction() {
         return selectedAction;
     }
 
-    public void setSelectedAction(Action action) {
+    public void setSelectedAction(AbstractAction action) {
         selectedAction = action;
     }
 
