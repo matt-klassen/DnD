@@ -2,6 +2,7 @@ package klassen.matt.dndproject.model.creature;
 
 import klassen.matt.dndproject.model.actions.Action;
 import klassen.matt.dndproject.model.creature.exception.LevelException;
+import klassen.matt.dndproject.model.creature.exception.NoNameException;
 import klassen.matt.dndproject.model.traits.AbilityScores;
 import klassen.matt.dndproject.model.traits.Levels;
 
@@ -34,7 +35,7 @@ public class Hero extends AbstractCreature {
     public Hero(String name, String creatureType, int armorClass,
                 int hitPoints, int speed, AbilityScores abilityScores,
                 Set<Action> actions, int level, String heroClass)
-            throws LevelException {
+            throws LevelException, NoNameException {
 
         super(name, creatureType, armorClass, hitPoints,
                 speed, abilityScores, actions);

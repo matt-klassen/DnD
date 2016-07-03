@@ -2,6 +2,8 @@ package klassen.matt.dndproject.model.creature;
 
 import klassen.matt.dndproject.model.actions.Action;
 import klassen.matt.dndproject.model.creature.exception.IllegalValueException;
+import klassen.matt.dndproject.model.creature.exception.LevelException;
+import klassen.matt.dndproject.model.creature.exception.NoNameException;
 import klassen.matt.dndproject.model.mechanics.Die;
 import klassen.matt.dndproject.model.mechanics.Effect;
 import klassen.matt.dndproject.model.traits.AbilityScores;
@@ -18,7 +20,7 @@ public class HeroFactory {
     public static final int DEFAULT_BASE_HP = 10;
 
     public static Hero makeHero(String name, String heroClass,
-                         String race, int level) {
+                         String race, int level) throws NoNameException {
         try {
             HeroClass starterClass = determineHeroClass(heroClass);
             Hero newHero = new Hero(name, race, starterClass.getAc(),
@@ -28,8 +30,10 @@ public class HeroFactory {
             newHero.addItem(starterClass.getStarterItem());
 
             return newHero;
-        } catch (Exception e) {
-            return null;
+        } catch (LevelException e) {
+            throw new RuntimeException();
+        } catch (IllegalValueException e) {
+            throw new RuntimeException();
         }
     }
 

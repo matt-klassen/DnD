@@ -2,6 +2,7 @@ package klassen.matt.dndproject.model.creature;
 
 
 import klassen.matt.dndproject.model.actions.Action;
+import klassen.matt.dndproject.model.creature.exception.NoNameException;
 import klassen.matt.dndproject.model.traits.AbilityScores;
 
 import java.util.Set;
@@ -29,7 +30,8 @@ public class Monster extends AbstractCreature {
      */
     public Monster(String name, String creatureType, int armorClass,
                    int hitPoints, int speed, AbilityScores abilityScores,
-                   Set<Action> actions, int challengeRating, int experience) {
+                   Set<Action> actions, int challengeRating, int experience)
+        throws NoNameException {
 
         super(name, creatureType, armorClass, hitPoints, speed,
                 abilityScores, actions);

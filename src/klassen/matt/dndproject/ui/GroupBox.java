@@ -20,7 +20,7 @@ import java.util.Set;
  */
 public class GroupBox extends VBox {
 
-    public static final int HEIGHT = 200;
+    public static final int HEIGHT = 210;
     public static final int WIDTH = 220;
     public static final int C_SIZE_LIMIT = 4;
 
@@ -85,7 +85,6 @@ public class GroupBox extends VBox {
     private void initInnerBox() {
         innerBox = new VBox();
         listView = new ListView<>();
-        listView.setMaxHeight(100);
         innerBox.getChildren().add(listView);
         initListener();
     }

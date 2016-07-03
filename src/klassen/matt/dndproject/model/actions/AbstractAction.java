@@ -1,5 +1,6 @@
 package klassen.matt.dndproject.model.actions;
 
+import klassen.matt.dndproject.model.creature.exception.NoNameException;
 import klassen.matt.dndproject.model.mechanics.Effect;
 
 /**

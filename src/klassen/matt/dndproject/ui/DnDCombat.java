@@ -2,6 +2,7 @@ package klassen.matt.dndproject.ui;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -13,6 +14,7 @@ import klassen.matt.dndproject.model.actions.Item;
 import klassen.matt.dndproject.model.creature.Hero;
 import klassen.matt.dndproject.model.creature.HeroFactory;
 import klassen.matt.dndproject.model.creature.exception.LevelException;
+import klassen.matt.dndproject.model.creature.exception.NoNameException;
 import klassen.matt.dndproject.model.mechanics.Die;
 import klassen.matt.dndproject.model.mechanics.Effect;
 import klassen.matt.dndproject.model.traits.AbilityScores;
@@ -78,12 +80,15 @@ public class DnDCombat extends Application {
     }
 
     public void monsterPopup() {
-
+        NewMonsterPopup mpopup = new NewMonsterPopup(this);
+        mpopup.display();
     }
 
     protected GroupBox getPartyBox() {
         return partyVBox;
     }
+
+    protected GroupBox getMonsterBox() { return monsterVBox; }
 
     private void initGrid() {
         grid = new GridPane();
@@ -148,6 +153,7 @@ public class DnDCombat extends Application {
         MenuItem newHero = new MenuItem("New _Hero...");
         MenuItem newMonster = new MenuItem("New _Monster...");
         newHero.setOnAction(e -> heroPopup());
+        newMonster.setOnAction(e -> monsterPopup());
         customizeMenu.getItems().addAll(newHero, newMonster);
         return customizeMenu;
     }
@@ -168,15 +174,18 @@ public class DnDCombat extends Application {
     // TODO move non-ui & pregen character behaviours to WorldDnD class
 
     public void initHeroes() {
-//       try {
-            pregen1 = HeroFactory.makeHero("Crush",
-                    "Barbarian", "Dragonborn", 1);
-            pregen2 = HeroFactory.makeHero("Quofiz",
-                    "Wizard", "Gnome", 1);
-            pregen3 = HeroFactory.makeHero("Vei",
-                    "Monk", "Human", 1);
-            pregen4 = HeroFactory.makeHero("Tain",
-                    "Fighter", "Human", 1);
+       try {
+           pregen1 = HeroFactory.makeHero("Crush",
+                   "Barbarian", "Dragonborn", 1);
+           pregen2 = HeroFactory.makeHero("Quofiz",
+                   "Wizard", "Gnome", 1);
+           pregen3 = HeroFactory.makeHero("Vei",
+                   "Monk", "Human", 1);
+           pregen4 = HeroFactory.makeHero("Tain",
+                   "Fighter", "Human", 1);
+       } catch (NoNameException e) {
+           return;
+       }
 //        } catch (LevelException e) {
 //            throw new RuntimeException(); // TODO: catch input error
 //        }
