@@ -2,6 +2,7 @@ package klassen.matt.dndproject.tests;
 
 import klassen.matt.dndproject.model.actions.Action;
 import klassen.matt.dndproject.model.creature.exception.IllegalValueException;
+import klassen.matt.dndproject.model.creature.exception.NoNameException;
 import klassen.matt.dndproject.model.mechanics.Die;
 import klassen.matt.dndproject.model.mechanics.Effect;
 import klassen.matt.dndproject.model.traits.AbilityScores;
@@ -23,7 +24,7 @@ public class MonsterTest {
     private Action swordAction;
 
     @Before
-    public void setUp() {
+    public void setUp() throws NoNameException {
         AbilityScores as = new AbilityScores(10, 12, 10, 8, 10, 10);
         Set<Action> actionsM = initActions();
         testMonster = new Monster("Kobold", "draconic", 10, 8, 30, as, actionsM, 1, 50);

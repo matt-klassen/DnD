@@ -2,6 +2,7 @@ package klassen.matt.dndproject.ui;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -13,6 +14,7 @@ import klassen.matt.dndproject.model.actions.Item;
 import klassen.matt.dndproject.model.creature.Hero;
 import klassen.matt.dndproject.model.creature.HeroFactory;
 import klassen.matt.dndproject.model.creature.exception.LevelException;
+import klassen.matt.dndproject.model.creature.exception.NoNameException;
 import klassen.matt.dndproject.model.mechanics.Die;
 import klassen.matt.dndproject.model.mechanics.Effect;
 import klassen.matt.dndproject.model.traits.AbilityScores;
@@ -29,7 +31,6 @@ import java.util.Set;
  * The main UI window
  */
 public class DnDCombat extends Application {
-    // TODO add Javadoc
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
     public static final double VERTICAL_GAP = 8;
@@ -48,15 +49,11 @@ public class DnDCombat extends Application {
     private WorldDND world;
     private GroupBox partyVBox;
     private GroupBox monsterVBox;
-    private TextArea combatLog;
+    private CombatLog combatLog;
+    private TextArea infoField;
     private ActionBox heroActionsVBox;
     private ActionBox monsterActionsVBox;
-    private PregenBox pregenVBox;
-
-    private Hero pregen1;
-    private Hero pregen2;
-    private Hero pregen3;
-    private Hero pregen4;
+    private Hero pregens[];
 
     public static void main(String[] args) {
         launch(args);
@@ -65,7 +62,7 @@ public class DnDCombat extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         window = primaryStage;
-        initHeroes();
+        initPregenHeroes();
         initGrid();
         initMenu();
         initLayout();
@@ -78,19 +75,22 @@ public class DnDCombat extends Application {
     }
 
     public void monsterPopup() {
-
+        NewMonsterPopup mpopup = new NewMonsterPopup(this);
+        mpopup.display();
     }
 
     protected GroupBox getPartyBox() {
         return partyVBox;
     }
 
+    protected GroupBox getMonsterBox() { return monsterVBox; }
+
     private void initGrid() {
         grid = new GridPane();
         initGridDimensions();
         initGridItems();
         grid.getChildren().addAll(partyVBox, monsterVBox, combatLog,
-                heroActionsVBox, monsterActionsVBox, pregenVBox);
+                heroActionsVBox, monsterActionsVBox, infoField);
     }
 
     private void initGridDimensions() {
@@ -105,14 +105,17 @@ public class DnDCombat extends Application {
         partyVBox = new GroupBox("Heroes", heroActionsVBox, this);
         monsterVBox = new GroupBox("Monsters", monsterActionsVBox, this);
         combatLog = new CombatLog(this);
-        pregenVBox = new PregenBox(this);
+        infoField = new TextArea("Tabletop RPG Combat Sim \n\nInstructions:" +
+                "\n1) Create a new Monster\n2) Select a Hero and a Monster" +
+                "\n3) Select and use actions");
+        infoField.setEditable(false);
         initItemDimensions();
         // TODO testing area below
         try {
-            partyVBox.addCreature(pregen1);
-            partyVBox.addCreature(pregen2);
-            partyVBox.addCreature(pregen3);
-            partyVBox.addCreature(pregen4);
+            partyVBox.addCreature(pregens[0]);
+            partyVBox.addCreature(pregens[1]);
+            partyVBox.addCreature(pregens[2]);
+            partyVBox.addCreature(pregens[3]);
         } catch (TooManyCreaturesException e) {
             throw new RuntimeException();
         }
@@ -122,11 +125,13 @@ public class DnDCombat extends Application {
         GridPane.setConstraints(partyVBox, 0, 0);
         GridPane.setMargin(partyVBox, new Insets(0, 0, 0, 10));
         GridPane.setConstraints(monsterVBox, 1, 0);
-        GridPane.setConstraints(combatLog, 2, 0);
+        GridPane.setConstraints(infoField, 2, 0);
+        GridPane.setConstraints(combatLog, 2, 1);
         GridPane.setConstraints(heroActionsVBox, 0, 1);
         GridPane.setMargin(heroActionsVBox, new Insets(0, 0, 0, 10));
         GridPane.setConstraints(monsterActionsVBox, 1, 1);
-        GridPane.setConstraints(pregenVBox, 2, 1);
+        combatLog.setMinHeight(ActionBox.HEIGHT);
+        infoField.setMaxWidth(combatLog.WIDTH);
     }
 
     private void initMenu() {
@@ -148,6 +153,7 @@ public class DnDCombat extends Application {
         MenuItem newHero = new MenuItem("New _Hero...");
         MenuItem newMonster = new MenuItem("New _Monster...");
         newHero.setOnAction(e -> heroPopup());
+        newMonster.setOnAction(e -> monsterPopup());
         customizeMenu.getItems().addAll(newHero, newMonster);
         return customizeMenu;
     }
@@ -161,25 +167,24 @@ public class DnDCombat extends Application {
     private void initWindow() {
         scene = new Scene(layout, WIDTH, HEIGHT);
         window.setScene(scene);
-        window.setTitle("D&D Combat Sim v0.1");
+        window.setTitle("Tabletop RPG Combat Sim v0.1");
         window.show();
     }
 
-    // TODO move non-ui & pregen character behaviours to WorldDnD class
-
-    public void initHeroes() {
-//       try {
-            pregen1 = HeroFactory.makeHero("Crush",
-                    "Barbarian", "Dragonborn", 1);
-            pregen2 = HeroFactory.makeHero("Quofiz",
-                    "Wizard", "Gnome", 1);
-            pregen3 = HeroFactory.makeHero("Vei",
-                    "Monk", "Human", 1);
-            pregen4 = HeroFactory.makeHero("Tain",
-                    "Fighter", "Human", 1);
-//        } catch (LevelException e) {
-//            throw new RuntimeException(); // TODO: catch input error
-//        }
+    public void initPregenHeroes() {
+        pregens = new Hero[4];
+       try {
+           pregens[0] = HeroFactory.makeHero("Crush",
+                   "Barbarian", "Dragonborn", 1);
+           pregens[1] = HeroFactory.makeHero("Quofiz",
+                   "Wizard", "Gnome", 1);
+           pregens[2] = HeroFactory.makeHero("Vei",
+                   "Monk", "Human", 1);
+           pregens[3] = HeroFactory.makeHero("Tain",
+                   "Fighter", "Human", 1);
+       } catch (NoNameException e) {
+           return;
+       }
     }
 
 }

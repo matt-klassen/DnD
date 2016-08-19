@@ -4,6 +4,7 @@ import klassen.matt.dndproject.model.actions.Item;
 import klassen.matt.dndproject.model.creature.Hero;
 import klassen.matt.dndproject.model.creature.exception.IllegalValueException;
 import klassen.matt.dndproject.model.creature.exception.LevelException;
+import klassen.matt.dndproject.model.creature.exception.NoNameException;
 import klassen.matt.dndproject.model.mechanics.Die;
 import klassen.matt.dndproject.model.mechanics.Effect;
 import klassen.matt.dndproject.model.traits.AbilityScores;
@@ -47,13 +48,15 @@ public class HeroTest {
                     actionSet, 1, "Barbarian");
             pregen1.addItem(greatAxe);
             pregen2 = new Hero("Quofiz", "Gnome", 11, 8, 25, ascores2,
-                    actionSet,1, "Wizard");
+                    actionSet, 1, "Wizard");
             pregen3 = new Hero("Vei", "Human", 14, 10, 30, ascores3,
                     actionSet, 1, "Monk");
             pregen3.addItem(quarterstaff);
             pregen4 = new Hero("Tain", "Human", 13, 15, 30, ascores4,
                     actionSet, 1, "Fighter");
             pregen4.addItem(longSword);
+        } catch (NoNameException e) {
+            throw new RuntimeException();
         } catch (LevelException e) {
             throw new RuntimeException(); // TODO: probably not good to keep this
         }

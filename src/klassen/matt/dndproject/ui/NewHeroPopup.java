@@ -9,6 +9,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import klassen.matt.dndproject.model.creature.Hero;
 import klassen.matt.dndproject.model.creature.HeroFactory;
+import klassen.matt.dndproject.model.creature.exception.NoNameException;
 import klassen.matt.dndproject.ui.exception.TooManyCreaturesException;
 
 
@@ -64,16 +65,18 @@ public class NewHeroPopup {
         return cancelButton;
     }
 
-    private void submitAction() { //TODO: Exception handling for no name given
+    private void submitAction() {
         Hero newHero;
         name = nameField.getText();
-        newHero = HeroFactory.makeHero(name, heroClass, creatureType, level);
         try {
+            newHero = HeroFactory.makeHero(name, heroClass, creatureType, level);
             partyBox.addCreature(newHero);
+            window.close();
+        } catch (NoNameException e) {
+            showInvalidNameAlert();
         } catch (TooManyCreaturesException e) {
             showFullAlert();
-        } finally {
-            window.close(); // If hero was successfully added, otherwise give error dialogue
+            window.close();
         }
     }
 
@@ -83,6 +86,15 @@ public class NewHeroPopup {
         alert.setHeaderText(null);
         alert.setGraphic(null);
         alert.setContentText("You cannot add any more Heroes to this party");
+        alert.showAndWait();
+    }
+
+    private static void showInvalidNameAlert() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("You must enter a name");
+        alert.setHeaderText(null);
+        alert.setGraphic(null);
+        alert.setContentText("You must enter a name to create a character");
         alert.showAndWait();
     }
 
@@ -174,6 +186,5 @@ public class NewHeroPopup {
 
     // TODO implement listeners for user submission fields
     // TODO implement HBox for cancel/submit buttons
-    // TODO implement Hero creation (HeroFactory class)
 
 }
