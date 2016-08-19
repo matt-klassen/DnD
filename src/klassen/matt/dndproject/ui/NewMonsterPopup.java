@@ -5,19 +5,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import klassen.matt.dndproject.model.creature.Hero;
-import klassen.matt.dndproject.model.creature.HeroFactory;
 import klassen.matt.dndproject.model.creature.Monster;
-import klassen.matt.dndproject.model.creature.PregenMonsters;
-import klassen.matt.dndproject.model.creature.exception.NoNameException;
 import klassen.matt.dndproject.ui.exception.TooManyCreaturesException;
-
-import javax.swing.*;
 
 /**
  * Created by Matt on 5/1/2016.
@@ -130,15 +123,15 @@ public class NewMonsterPopup {
 
     private Monster stringToMonster(String monsterString) {
         switch (monsterString) {
-            case "Kobold": return PregenMonsters.KOBOLD.getMonster();
-            case "Goblin": return PregenMonsters.GOBLIN.getMonster();
-            case "Orc": return PregenMonsters.ORC.getMonster();
-            case "Owlbear": return PregenMonsters.OWLBEAR.getMonster();
-            case "Troll": return PregenMonsters.TROLL.getMonster();
-            case "Red Dragon": return PregenMonsters.RED_DRAGON.getMonster();
-            case "Beholder": return PregenMonsters.BEHOLDER.getMonster();
-            case "Devil": return PregenMonsters.DEVIL.getMonster();
-            case "Lich": return PregenMonsters.LICH.getMonster();
+            case "Kobold": return Monster.newKobold();
+            case "Goblin": return Monster.newGoblin();
+            case "Orc": return Monster.newOrc();
+            case "Owlbear": return Monster.newOwlbear();
+            case "Troll": return Monster.newTroll();
+            case "Red Dragon": return Monster.newRedDragon();
+            case "Beholder": return Monster.newBeholder();
+            case "Devil": return Monster.newDevil();
+            case "Lich": return Monster.newLich();
             default: return null;
         }
     }

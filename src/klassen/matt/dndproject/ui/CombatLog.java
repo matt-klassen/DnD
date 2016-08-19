@@ -14,6 +14,7 @@ public class CombatLog extends TextArea {
 
     private DnDCombat parent;
 
+
     public CombatLog(DnDCombat parent) {
         super();
         this.parent = parent;

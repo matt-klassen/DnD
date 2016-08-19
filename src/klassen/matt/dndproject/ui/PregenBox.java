@@ -22,6 +22,6 @@ public class PregenBox extends VBox {
         this.setMaxWidth(WIDTH);
     }
 
-    // TODO implement pregen behaviours
+    // TODO delete and extend combat log
 
 }

@@ -22,6 +22,9 @@ public class HeroFactory {
     public static Hero makeHero(String name, String heroClass,
                          String race, int level) throws NoNameException {
         try {
+            if (name.length() == 0) {
+                throw new NoNameException();
+            }
             HeroClass starterClass = determineHeroClass(heroClass);
             Hero newHero = new Hero(name, race, starterClass.getAc(),
                     DEFAULT_BASE_HP, DEFAULT_MOVE_SPEED,

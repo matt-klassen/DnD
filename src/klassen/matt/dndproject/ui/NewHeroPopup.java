@@ -65,7 +65,7 @@ public class NewHeroPopup {
         return cancelButton;
     }
 
-    private void submitAction() { //TODO: Exception handling for no name given
+    private void submitAction() {
         Hero newHero;
         name = nameField.getText();
         try {
