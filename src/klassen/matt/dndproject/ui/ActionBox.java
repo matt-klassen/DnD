@@ -87,12 +87,17 @@ public class ActionBox extends VBox {
         innerBox.getChildren().add(actionListView);
     }
 
+    private void useAction() {
+        pairedBox.useAction(getSelectedAction());
+    }
+
     private void initButtons() {
         Button useActionButton = new Button("Use Action");
         useActionButton.setPadding(DnDCombat.SMALL_INSET);
         buttonArea = new HBox();
         buttonArea.getChildren().add(useActionButton);
         buttonArea.setPadding(DnDCombat.LARGE_INSET);
+        useActionButton.setOnAction(e -> useAction());
     }
 
     private void initActionListView() {

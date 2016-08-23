@@ -8,12 +8,13 @@ import klassen.matt.dndproject.model.actions.AbstractAction;
 import klassen.matt.dndproject.model.actions.Action;
 import klassen.matt.dndproject.model.actions.Item;
 import klassen.matt.dndproject.model.creature.AbstractCreature;
+import klassen.matt.dndproject.model.creature.Hero;
+import klassen.matt.dndproject.model.creature.Monster;
+import klassen.matt.dndproject.model.creature.exception.IllegalValueException;
+import klassen.matt.dndproject.model.mechanics.Effect;
 import klassen.matt.dndproject.ui.exception.TooManyCreaturesException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A JavaFX VBox that contains a group of creatures
@@ -45,7 +46,7 @@ public class GroupBox extends VBox {
     }
 
     public void addCreature(AbstractCreature creature) throws TooManyCreaturesException {
-        if (creatures.size() < 4) {
+        if (creatures.size() < C_SIZE_LIMIT) {
             if (!creatures.containsValue(creature)) {
                 creatures.put(creature.getName(), creature);
                 listView.getItems().add(creature.getName());
@@ -56,11 +57,17 @@ public class GroupBox extends VBox {
     }
 
     public void removeCreature(AbstractCreature creature) {
-        if (creature != null) { // otherwise simply do nothing
+        if (creature != null) {
             creatures.remove(creature.getName());
             listView.getItems().remove(creature.getName());
             clearSelection();
         }
+    }
+
+    public void removeAllCreatures() {
+        creatures.clear();
+        listView.getItems().clear();
+        clearSelection();
     }
 
     public AbstractCreature getSelectedCreature() {
@@ -73,6 +80,56 @@ public class GroupBox extends VBox {
 
     public void setSelectedCreature(AbstractCreature creature) {
         selectedCreature = creature;
+    }
+
+    /**
+     * Invokes an action against a selected target
+     *
+     * @param action the selected creature's action to be used against selected target
+     */
+    public void useAction(AbstractAction action) {
+
+        AbstractCreature creature = selectedCreature;
+        AbstractCreature target = null;
+        CombatLog log = parent.getCombatLog();
+        GroupBox otherBox = null;
+
+        if (this.boxName == "Heroes") {
+            target = parent.getMonsterBox().getSelectedCreature();
+            otherBox = parent.getMonsterBox();
+        } else {
+            target = parent.getPartyBox().getSelectedCreature();
+            otherBox = parent.getPartyBox();
+        }
+
+        if (target == null) {
+            return;
+        }
+
+        Effect actionEffect = action.invokeAction();
+        if (actionEffect.getEffectType() == "Healing") {
+            try {
+                creature.heal(actionEffect.rollDie());
+            } catch (IllegalValueException e) {
+                throw new IllegalArgumentException();
+            }
+        } else {
+            try {
+                target.takeDamage(actionEffect.rollDie());
+                if (target.getClass() == Monster.class) {
+                    if (!target.getAlive()) {
+                        Hero hero = (Hero) creature;
+                        Monster monster = (Monster) target;
+                        hero.gainExperience(monster.getExperience());
+                    }
+                }
+                if (!target.getAlive()) { // delete target if killed
+                    otherBox.removeCreature(target);
+                }
+            } catch (IllegalValueException e) {
+                throw new IllegalArgumentException();
+            }
+        }
     }
 
     private void initChildren() {
@@ -177,4 +234,5 @@ public class GroupBox extends VBox {
         pairedBox = box;
         box.pair(this);
     }
+
 }
