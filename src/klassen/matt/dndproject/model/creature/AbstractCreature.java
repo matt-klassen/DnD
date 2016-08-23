@@ -5,6 +5,7 @@ import klassen.matt.dndproject.model.actions.Item;
 import klassen.matt.dndproject.model.creature.exception.HitPointException;
 import klassen.matt.dndproject.model.creature.exception.IllegalValueException;
 import klassen.matt.dndproject.model.traits.AbilityScores;
+import klassen.matt.dndproject.ui.CombatLog;
 
 import java.util.*;
 
@@ -33,6 +34,8 @@ public abstract class AbstractCreature extends Observable {
     private Set<Item> items;
     /** Whether the creature is alive (true) or dead (false) */
     private boolean alive;
+    /** The global combat log */
+    private CombatLog combatLog;
 
     /**
      * Constructor
@@ -59,6 +62,7 @@ public abstract class AbstractCreature extends Observable {
         this.actions = actions;
         items = new HashSet<Item>();
         alive = true;
+        combatLog = CombatLog.getInstance();
         // TODO: Observers for dead/alive status
     }
 
@@ -72,6 +76,7 @@ public abstract class AbstractCreature extends Observable {
         if (dmg < 0) { throw new IllegalValueException(); }
         int newHP = cHitPoints - dmg;
 
+        combatLog.message(name + " takes " + dmg + " points of damage.");
         try {
             setCHitPoints(newHP);
         } catch (HitPointException e) {
@@ -79,6 +84,7 @@ public abstract class AbstractCreature extends Observable {
         } finally {
             if (cHitPoints == 0) {
                 alive = false;
+                combatLog.message(name + " has died!");
             }
         }
     }
@@ -92,7 +98,7 @@ public abstract class AbstractCreature extends Observable {
     public void heal(int heal) throws IllegalValueException {
         if (heal < 0) { throw new IllegalValueException(); }
         int newHP = cHitPoints + heal;
-
+        combatLog.message(name + " heals for " + heal + " hit points.");
         try {
             setCHitPoints(newHP);
         } catch (HitPointException e) {

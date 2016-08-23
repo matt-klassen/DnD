@@ -2,26 +2,15 @@ package klassen.matt.dndproject.ui;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import klassen.matt.dndproject.model.WorldDND;
-import klassen.matt.dndproject.model.actions.Action;
-import klassen.matt.dndproject.model.actions.Item;
 import klassen.matt.dndproject.model.creature.Hero;
 import klassen.matt.dndproject.model.creature.HeroFactory;
-import klassen.matt.dndproject.model.creature.exception.LevelException;
 import klassen.matt.dndproject.model.creature.exception.NoNameException;
-import klassen.matt.dndproject.model.mechanics.Die;
-import klassen.matt.dndproject.model.mechanics.Effect;
-import klassen.matt.dndproject.model.traits.AbilityScores;
 import klassen.matt.dndproject.ui.exception.TooManyCreaturesException;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Matt Klassen <matt.klassen@yahoo.ca>
@@ -46,7 +35,6 @@ public class DnDCombat extends Application {
     private GridPane grid;
     private BorderPane layout;
     private MenuBar menuBar;
-    private WorldDND world;
     private GroupBox partyVBox;
     private GroupBox monsterVBox;
     private CombatLog combatLog;
@@ -85,6 +73,8 @@ public class DnDCombat extends Application {
 
     protected GroupBox getMonsterBox() { return monsterVBox; }
 
+    protected CombatLog getCombatLog() { return combatLog; }
+
     private void initGrid() {
         grid = new GridPane();
         initGridDimensions();
@@ -104,7 +94,7 @@ public class DnDCombat extends Application {
         monsterActionsVBox = new ActionBox(this);
         partyVBox = new GroupBox("Heroes", heroActionsVBox, this);
         monsterVBox = new GroupBox("Monsters", monsterActionsVBox, this);
-        combatLog = new CombatLog(this);
+        combatLog = CombatLog.getInstance();
         infoField = new TextArea("Tabletop RPG Combat Sim \n\nInstructions:" +
                 "\n1) Create a new Monster\n2) Select a Hero and a Monster" +
                 "\n3) Select and use actions");
@@ -144,6 +134,7 @@ public class DnDCombat extends Application {
     private Menu createFileMenu() {
         Menu fileMenu = new Menu("_File");
         MenuItem newFile = new MenuItem("_New");
+        newFile.setOnAction(e -> restart());
         fileMenu.getItems().addAll(newFile);
         return fileMenu;
     }
@@ -171,17 +162,23 @@ public class DnDCombat extends Application {
         window.show();
     }
 
+    private void restart() {
+        partyVBox.removeAllCreatures();
+        monsterVBox.removeAllCreatures();
+        combatLog.reset();
+    }
+
     public void initPregenHeroes() {
         pregens = new Hero[4];
        try {
-           pregens[0] = HeroFactory.makeHero("Crush",
-                   "Barbarian", "Dragonborn", 1);
-           pregens[1] = HeroFactory.makeHero("Quofiz",
-                   "Wizard", "Gnome", 1);
-           pregens[2] = HeroFactory.makeHero("Vei",
-                   "Monk", "Human", 1);
-           pregens[3] = HeroFactory.makeHero("Tain",
-                   "Fighter", "Human", 1);
+           pregens[0] = HeroFactory.makeHero("Blorpo",
+                   "Barbarian", "Human", 1);
+           pregens[1] = HeroFactory.makeHero("Barry",
+                   "Bard", "Dragonborn", 1);
+           pregens[2] = HeroFactory.makeHero("Paula",
+                   "Sorcerer", "Human", 1);
+           pregens[3] = HeroFactory.makeHero("Eidos",
+                   "Rogue", "Tiefling", 1);
        } catch (NoNameException e) {
            return;
        }

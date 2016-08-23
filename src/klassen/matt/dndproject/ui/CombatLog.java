@@ -7,21 +7,34 @@ import javafx.scene.control.TextArea;
  * Real-time Combat Log that displays results of actions between creatures
  */
 public class CombatLog extends TextArea {
-    // TODO implement CombatLog behaviours
 
     public static final int WIDTH = 300;
     public static final int HEIGHT = 200;
 
-    private DnDCombat parent;
+    private static CombatLog instance;
 
-
-    public CombatLog(DnDCombat parent) {
+    private CombatLog() {
         super();
-        this.parent = parent;
         this.setBorder(DnDCombat.BORDER);
         this.setEditable(false);
-        this.setText("Combat Log");
+        this.setText("Combat Log\n\n");
         initDimensions();
+    }
+
+    public static CombatLog getInstance() {
+        if (instance == null) {
+            instance = new CombatLog();
+        }
+        return instance;
+    }
+
+    public void message(String msg) {
+        this.appendText(msg + "\n");
+    }
+
+    public void reset() {
+        this.clear();
+        this.setText("Combat Log\n\n");
     }
 
     private void initDimensions() {

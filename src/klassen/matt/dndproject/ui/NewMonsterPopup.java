@@ -13,7 +13,7 @@ import klassen.matt.dndproject.model.creature.Monster;
 import klassen.matt.dndproject.ui.exception.TooManyCreaturesException;
 
 /**
- * Created by Matt on 5/1/2016.
+ * Prompt for new monster creation.
  */
 public class NewMonsterPopup {
 

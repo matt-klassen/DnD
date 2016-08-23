@@ -5,6 +5,7 @@ import klassen.matt.dndproject.model.creature.exception.LevelException;
 import klassen.matt.dndproject.model.creature.exception.NoNameException;
 import klassen.matt.dndproject.model.traits.AbilityScores;
 import klassen.matt.dndproject.model.traits.Levels;
+import klassen.matt.dndproject.ui.CombatLog;
 
 import java.util.Set;
 
@@ -57,7 +58,11 @@ public class Hero extends AbstractCreature {
      * @param experienceGained  the amount of experience gained
      */
     public void gainExperience(int experienceGained) {
+
         experience += experienceGained;
+        CombatLog combatLog = CombatLog.getInstance();
+        combatLog.message(this.getName() + " has gained "
+                + experienceGained + " experience.");
         checkLevel();
     }
 
@@ -67,14 +72,12 @@ public class Hero extends AbstractCreature {
      *
      * @throws LevelException
      */
-    public void levelUp() throws LevelException {
+    public void levelUp() {
 
         if (level < 20) {
             int newExp = levels[level].getExpThreshold();
             level += 1;
             experience = newExp;
-        } else {
-            throw new LevelException("Hero already at maximum level");
         }
     }
 
@@ -131,10 +134,12 @@ public class Hero extends AbstractCreature {
      */
     private void checkLevel() {
         if (level < 20) {
+
             int expToLevel = levels[level].getExpThreshold();
 
-            if (experience >= expToLevel) {
+            while (experience >= expToLevel && level < 20) {
                 levelFromExperience();
+                expToLevel = levels[level].getExpThreshold();
             }
         }
     }
@@ -144,7 +149,9 @@ public class Hero extends AbstractCreature {
      * pool of experience as it is.
      */
     private void levelFromExperience() {
-        level++;
+        level += 1;
+        CombatLog combatLog = CombatLog.getInstance();
+        combatLog.message(this.getName() + " has reached level " + level + ".");
     }
 
 }

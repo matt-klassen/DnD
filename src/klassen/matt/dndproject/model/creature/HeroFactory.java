@@ -43,11 +43,9 @@ public class HeroFactory {
     public static Set<Action> initBasicActions() {
         Effect punch = new Effect(new Die("1d1"), "bludgeoning");
         Action punchAction = new Action("Punch", punch);
-        Action dodge = new Action("Dodge");
 
         Set<Action> basicActions = new HashSet<Action>();
         basicActions.add(punchAction);
-        basicActions.add(dodge);
 
         return basicActions;
     }
