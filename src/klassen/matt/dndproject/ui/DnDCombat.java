@@ -7,8 +7,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import klassen.matt.dndproject.model.creature.AbstractCreature;
 import klassen.matt.dndproject.model.creature.Hero;
 import klassen.matt.dndproject.model.creature.HeroFactory;
+import klassen.matt.dndproject.model.creature.Monster;
 import klassen.matt.dndproject.model.creature.exception.NoNameException;
 import klassen.matt.dndproject.ui.exception.TooManyCreaturesException;
 
@@ -43,6 +45,7 @@ public class DnDCombat extends Application {
     private ActionBox heroActionsVBox;
     private ActionBox monsterActionsVBox;
     private Hero pregens[];
+    private Integer levelTot;
 
     public static void main(String[] args) {
         launch(args);
@@ -142,9 +145,11 @@ public class DnDCombat extends Application {
         Menu customizeMenu = new Menu("_Customize");
         MenuItem newHero = new MenuItem("New _Hero...");
         MenuItem newMonster = new MenuItem("New _Monster...");
+        MenuItem fillMonsters = new MenuItem("Create Balanced Monster Group");
         newHero.setOnAction(e -> heroPopup());
         newMonster.setOnAction(e -> monsterPopup());
-        customizeMenu.getItems().addAll(newHero, newMonster);
+        fillMonsters.setOnAction(e -> createBalancedMonsters());
+        customizeMenu.getItems().addAll(newHero, newMonster, fillMonsters);
         return customizeMenu;
     }
 
@@ -168,7 +173,7 @@ public class DnDCombat extends Application {
         HeroInfo.getInstance(partyVBox).clear();
     }
 
-    public void initPregenHeroes() {
+    private void initPregenHeroes() {
         pregens = new Hero[3];
        try {
            pregens[0] = HeroFactory.makeHero("Blorpo",
@@ -180,6 +185,55 @@ public class DnDCombat extends Application {
        } catch (NoNameException e) {
            return;
        }
+    }
+
+    private void createBalancedMonsters() {
+        monsterVBox.removeAllCreatures();
+        levelTot = 0;
+        partyVBox.getCreatures().forEach((s,h) -> addLevels(h));
+        while ((monsterVBox.getCreaturesSize() < 4) && (levelTot > 1)) {
+            try {
+                addBalancedMonster();
+            } catch (TooManyCreaturesException e) {
+                throw new RuntimeException();
+            }
+        }
+    }
+
+    private void addLevels(AbstractCreature c) {
+        Hero h = (Hero) c;
+        levelTot += h.getLevel();
+    }
+
+    private void addBalancedMonster() throws TooManyCreaturesException {
+        if (levelTot >= 21) {
+            monsterVBox.addCreature(Monster.newLich());
+            levelTot -= 21;
+        } else if (levelTot >= 18) {
+            monsterVBox.addCreature(Monster.newRedDragon());
+            levelTot -= 18;
+        } else if (levelTot >= 15) {
+            monsterVBox.addCreature(Monster.newDevil());
+            levelTot -= 15;
+        } else if (levelTot >= 12) {
+            monsterVBox.addCreature(Monster.newBeholder());
+            levelTot -= 12;
+        } else if (levelTot >= 6) {
+            monsterVBox.addCreature(Monster.newTroll());
+            levelTot -= 6;
+        } else if (levelTot >= 4) {
+            monsterVBox.addCreature(Monster.newOwlbear());
+            levelTot -= 4;
+        } else if (levelTot >= 3) {
+            monsterVBox.addCreature(Monster.newOrc());
+            levelTot -=3;
+        } else if (levelTot >= 2) {
+            monsterVBox.addCreature(Monster.newGoblin());
+            levelTot -= 2;
+        } else {
+            monsterVBox.addCreature(Monster.newKobold());
+            levelTot -= 1;
+        }
     }
 
 }

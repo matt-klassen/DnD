@@ -79,6 +79,10 @@ public class GroupBox extends VBox {
         return creatures.size();
     }
 
+    public Map<String,AbstractCreature> getCreatures() {
+        return creatures;
+    }
+
     public void setSelectedCreature(AbstractCreature creature) {
         selectedCreature = creature;
         if (selectedCreature.getClass() == Hero.class) {
