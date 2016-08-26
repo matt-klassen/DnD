@@ -157,7 +157,7 @@ public class DnDCombat extends Application {
     private void initWindow() {
         scene = new Scene(layout, WIDTH, HEIGHT);
         window.setScene(scene);
-        window.setTitle("Tabletop RPG Combat Sim v0.1");
+        window.setTitle("Tabletop RPG Combat Sim");
         window.show();
     }
 

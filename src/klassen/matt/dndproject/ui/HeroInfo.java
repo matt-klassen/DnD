@@ -28,6 +28,7 @@ public class HeroInfo extends TextArea {
     public static void displaySelectedHero(Hero hero) {
         instance.clear();
         instance.setText(hero.getName() + "\n---------" +
+        "\nRace: " + hero.getCreatureType() + "\nClass: " + hero.getHeroClass() +
         "\nLevel: " + hero.getLevel() + "\nCurrent Hit Points: " + hero.getCHitPoints() +
         "\nMax Hit Points: " + hero.getHitPoints() +
         "\nArmor Class: " + hero.getArmorClass() +
