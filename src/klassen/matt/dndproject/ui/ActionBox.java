@@ -88,7 +88,9 @@ public class ActionBox extends VBox {
     }
 
     private void useAction() {
-        pairedBox.useAction(getSelectedAction());
+        if (getSelectedAction() != null) {
+            pairedBox.useAction(getSelectedAction());
+        }
     }
 
     private void initButtons() {

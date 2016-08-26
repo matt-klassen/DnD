@@ -12,6 +12,7 @@ import klassen.matt.dndproject.model.creature.Hero;
 import klassen.matt.dndproject.model.creature.Monster;
 import klassen.matt.dndproject.model.creature.exception.IllegalValueException;
 import klassen.matt.dndproject.model.mechanics.Effect;
+import klassen.matt.dndproject.model.mechanics.Battle;
 import klassen.matt.dndproject.ui.exception.TooManyCreaturesException;
 
 import java.util.*;
@@ -80,6 +81,10 @@ public class GroupBox extends VBox {
 
     public void setSelectedCreature(AbstractCreature creature) {
         selectedCreature = creature;
+        if (selectedCreature.getClass() == Hero.class) {
+            HeroInfo.displaySelectedHero((Hero) creature);
+        }
+        generateSelectedCreatureActions();
     }
 
     /**
@@ -91,8 +96,13 @@ public class GroupBox extends VBox {
 
         AbstractCreature creature = selectedCreature;
         AbstractCreature target = null;
-        CombatLog log = parent.getCombatLog();
         GroupBox otherBox = null;
+        Effect actionEffect = action.invokeAction();
+
+        if (actionEffect.getEffectType() == "Healing") {
+            Battle.handleHeal(creature, actionEffect);
+            return;
+        }
 
         if (this.boxName == "Heroes") {
             target = parent.getMonsterBox().getSelectedCreature();
@@ -101,36 +111,14 @@ public class GroupBox extends VBox {
             target = parent.getPartyBox().getSelectedCreature();
             otherBox = parent.getPartyBox();
         }
-
         if (target == null) {
             return;
         }
 
-        Effect actionEffect = action.invokeAction();
-        if (actionEffect.getEffectType() == "Healing") {
-            try {
-                creature.heal(actionEffect.rollDie());
-            } catch (IllegalValueException e) {
-                throw new IllegalArgumentException();
-            }
-        } else {
-            try {
-                target.takeDamage(actionEffect.rollDie());
-                if (target.getClass() == Monster.class) {
-                    if (!target.getAlive()) {
-                        Hero hero = (Hero) creature;
-                        Monster monster = (Monster) target;
-                        hero.gainExperience(monster.getExperience());
-                    }
-                }
-                if (!target.getAlive()) { // delete target if killed
-                    otherBox.removeCreature(target);
-                }
-            } catch (IllegalValueException e) {
-                throw new IllegalArgumentException();
-            }
-        }
+        Battle.handleAttack(creature, target, actionEffect, otherBox);
     }
+
+
 
     private void initChildren() {
         initInnerBox();

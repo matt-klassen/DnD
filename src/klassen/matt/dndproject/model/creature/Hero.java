@@ -1,11 +1,14 @@
 package klassen.matt.dndproject.model.creature;
 
+import com.oracle.jrockit.jfr.InvalidValueException;
 import klassen.matt.dndproject.model.actions.Action;
+import klassen.matt.dndproject.model.creature.exception.HitPointException;
 import klassen.matt.dndproject.model.creature.exception.LevelException;
 import klassen.matt.dndproject.model.creature.exception.NoNameException;
 import klassen.matt.dndproject.model.traits.AbilityScores;
 import klassen.matt.dndproject.model.traits.Levels;
 import klassen.matt.dndproject.ui.CombatLog;
+import klassen.matt.dndproject.ui.HeroInfo;
 
 import java.util.Set;
 
@@ -13,6 +16,8 @@ import java.util.Set;
  * Represents a heroic player character or NPC (as opposed to a generic NPC)
  */
 public class Hero extends AbstractCreature {
+
+    public static final int LEVEL_HP_BOOST = 5;
 
     private int level;
     private String heroClass;
@@ -67,21 +72,6 @@ public class Hero extends AbstractCreature {
     }
 
     /**
-     * Manually levels up the hero by one level to a maximum of 20 and adjusts
-     * experience pool to minimum amount required for the new level.
-     *
-     * @throws LevelException
-     */
-    public void levelUp() {
-
-        if (level < 20) {
-            int newExp = levels[level].getExpThreshold();
-            level += 1;
-            experience = newExp;
-        }
-    }
-
-    /**
      * Manually sets the hero's level and adjusts experience pool to minimum
      * amount required for the new level. Throws level exception if the level
      * passed as argument is greater than 20 or less than 1.
@@ -96,6 +86,9 @@ public class Hero extends AbstractCreature {
         this.level = level;
         int newExp = levels[level - 1].getExpThreshold();
         experience = newExp;
+        initScores();
+        initHP();
+
     }
 
     public int getLevel() {
@@ -150,8 +143,42 @@ public class Hero extends AbstractCreature {
      */
     private void levelFromExperience() {
         level += 1;
-        CombatLog combatLog = CombatLog.getInstance();
-        combatLog.message(this.getName() + " has reached level " + level + ".");
+        CombatLog.getInstance().message(this.getName() + " has reached level " + level + ".");
+        levelBoost();
+        HeroInfo.displaySelectedHero(this);
+
     }
 
+    private void levelBoost() {
+        if (level%4==0) {
+            this.getAbilityScores().incKeyScore();
+            this.getAbilityScores().incConScore();
+            this.incArmorClass();
+        }
+        setHitPoints(getHitPoints() + ((getAbilityScores().getConScore()-10)/2) + LEVEL_HP_BOOST);
+        try {
+            setCHitPoints(getHitPoints());
+        } catch (HitPointException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    private void initScores() {
+        for (int i = 1; i < level/4; i++) {
+            this.getAbilityScores().incKeyScore();
+            this.getAbilityScores().incConScore();
+            this.incArmorClass();
+        }
+    }
+
+    private void initHP() {
+        for (int i = 1; i < level; i++) {
+            setHitPoints(getHitPoints() + ((getAbilityScores().getConScore()-10)/2) + LEVEL_HP_BOOST);
+            try {
+                setCHitPoints(getHitPoints());
+            } catch (HitPointException e) {
+                throw new RuntimeException();
+            }
+        }
+    }
 }

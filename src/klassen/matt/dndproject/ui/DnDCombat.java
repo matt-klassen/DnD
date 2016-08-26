@@ -14,8 +14,8 @@ import klassen.matt.dndproject.ui.exception.TooManyCreaturesException;
 
 /**
  * @author Matt Klassen <matt.klassen@yahoo.ca>
- * @version 0.1
- * @since 2016-05-01
+ * @version 1.0
+ * @since 2016-06-01
  *
  * The main UI window
  */
@@ -30,6 +30,7 @@ public class DnDCombat extends Application {
             new CornerRadii(1), BorderStroke.THIN) };
     public static final Border BORDER = new Border(BORDERS);
 
+    private static DnDCombat instance;
     private Stage window;
     private Scene scene;
     private GridPane grid;
@@ -55,6 +56,11 @@ public class DnDCombat extends Application {
         initMenu();
         initLayout();
         initWindow();
+        this.instance = this;
+    }
+
+    public static DnDCombat getInstance() {
+        return instance;
     }
 
     public void heroPopup() {
@@ -67,13 +73,11 @@ public class DnDCombat extends Application {
         mpopup.display();
     }
 
-    protected GroupBox getPartyBox() {
+    public GroupBox getPartyBox() {
         return partyVBox;
     }
 
-    protected GroupBox getMonsterBox() { return monsterVBox; }
-
-    protected CombatLog getCombatLog() { return combatLog; }
+    public GroupBox getMonsterBox() { return monsterVBox; }
 
     private void initGrid() {
         grid = new GridPane();
@@ -95,17 +99,12 @@ public class DnDCombat extends Application {
         partyVBox = new GroupBox("Heroes", heroActionsVBox, this);
         monsterVBox = new GroupBox("Monsters", monsterActionsVBox, this);
         combatLog = CombatLog.getInstance();
-        infoField = new TextArea("Tabletop RPG Combat Sim \n\nInstructions:" +
-                "\n1) Create a new Monster\n2) Select a Hero and a Monster" +
-                "\n3) Select and use actions");
-        infoField.setEditable(false);
+        infoField = HeroInfo.getInstance(partyVBox);
         initItemDimensions();
-        // TODO testing area below
         try {
             partyVBox.addCreature(pregens[0]);
             partyVBox.addCreature(pregens[1]);
             partyVBox.addCreature(pregens[2]);
-            partyVBox.addCreature(pregens[3]);
         } catch (TooManyCreaturesException e) {
             throw new RuntimeException();
         }
@@ -166,18 +165,17 @@ public class DnDCombat extends Application {
         partyVBox.removeAllCreatures();
         monsterVBox.removeAllCreatures();
         combatLog.reset();
+        HeroInfo.getInstance(partyVBox).clear();
     }
 
     public void initPregenHeroes() {
-        pregens = new Hero[4];
+        pregens = new Hero[3];
        try {
            pregens[0] = HeroFactory.makeHero("Blorpo",
                    "Barbarian", "Human", 1);
-           pregens[1] = HeroFactory.makeHero("Barry",
-                   "Bard", "Dragonborn", 1);
-           pregens[2] = HeroFactory.makeHero("Paula",
+           pregens[1] = HeroFactory.makeHero("Paula",
                    "Sorcerer", "Human", 1);
-           pregens[3] = HeroFactory.makeHero("Eidos",
+           pregens[2] = HeroFactory.makeHero("Iados",
                    "Rogue", "Tiefling", 1);
        } catch (NoNameException e) {
            return;
