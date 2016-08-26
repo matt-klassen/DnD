@@ -42,6 +42,9 @@ public class Item extends AbstractAction {
     }
 
     public void setOwner(AbstractCreature owner) {
+        if (this.owner != null) {
+            this.owner.removeItem(this);
+        }
         this.owner = owner;
     }
 
@@ -64,6 +67,5 @@ public class Item extends AbstractAction {
         this.effect = effect;
         isMagic = true;
     }
-
 
 }

@@ -26,6 +26,8 @@ public abstract class AbstractCreature extends Observable {
     private int cHitPoints;
     /** Movement speed */
     private int speed;
+    /** Attacker bonus for d20 rolls */
+    private int attackBonus;
     /** The creature's innate ability scores */
     private AbilityScores abilityScores;
     /** The actions the creature can perform */
@@ -134,14 +136,19 @@ public abstract class AbstractCreature extends Observable {
         this.notifyObservers();
     }
 
+    public void incArmorClass() {
+        armorClass++;
+    }
+
     public void addItem(Item i) {
-        items.add(i);
-        i.setOwner(this);
+        if (!items.contains(i)) {
+            i.setOwner(null);
+            items.add(i);
+        }
     }
 
     public void removeItem(Item i) {
         items.remove(i);
-        i.setOwner(null);
     }
 
     public Set<Item> getItems() {
@@ -165,6 +172,10 @@ public abstract class AbstractCreature extends Observable {
     }
 
     public int getCHitPoints() { return cHitPoints; }
+
+    public void setHitPoints(int newHP) {
+        this.hitPoints = newHP;
+    }
 
     public int getSpeed() {
         return speed;

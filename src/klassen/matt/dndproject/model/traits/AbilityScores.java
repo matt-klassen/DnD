@@ -12,38 +12,51 @@ public class AbilityScores {
     private int intScore;
     private int wisScore;
     private int chaScore;
+    /** the key ability score for the owner of this set of Ability Scores */
+    private String keyScore;
 
     public AbilityScores(int strScore, int dexScore,
                          int conScore, int intScore,
-                         int wisScore, int chaScore) {
+                         int wisScore, int chaScore,
+                         String keyScore) {
         this.strScore = strScore;
         this.dexScore = dexScore;
         this.conScore = conScore;
         this.intScore = intScore;
         this.wisScore = wisScore;
         this.chaScore = chaScore;
+        this.keyScore = keyScore;
     }
 
-    public void setStrScore(int newStrScore) { strScore = newStrScore; }
-
-    public void setDexScore(int newDexScore) {
-        dexScore = newDexScore;
+    public void incKeyScore() {
+        switch (keyScore) {
+            case "str": strScore++; break;
+            case "dex": dexScore++; break;
+            case "con": conScore++; break;
+            case "int": intScore++; break;
+            case "wis": wisScore++; break;
+            case "cha": chaScore++; break;
+        }
     }
 
-    public void setConScore(int newConScore) {
-        conScore = newConScore;
+    public void incConScore() {
+        conScore++;
     }
 
-    public void setIntScore(int newIntScore) {
-        intScore = newIntScore;
+    public String getKeyScoreAsString() {
+        return keyScore;
     }
 
-    public void setWisScore(int newWisScore) {
-        wisScore = newWisScore;
-    }
-
-    public void setChaScore(int newChaScore) {
-        chaScore = newChaScore;
+    public int getKeyScore() {
+        switch (keyScore) {
+            case "str": return strScore;
+            case "dex": return dexScore;
+            case "con": return conScore;
+            case "int": return intScore;
+            case "wis": return wisScore;
+            case "cha": return chaScore;
+            default: throw new RuntimeException();
+        }
     }
 
     public int getStrScore() {

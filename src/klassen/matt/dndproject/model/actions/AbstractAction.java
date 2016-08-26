@@ -8,14 +8,14 @@ import klassen.matt.dndproject.model.mechanics.Effect;
  */
 public abstract class AbstractAction {
 
-    private String name;
+    protected String name;
     protected Effect effect;
 
     public AbstractAction(String name) {
         this.name = name;
     }
 
-    public AbstractAction(String name, Effect effect) {
+    public AbstractAction(String name, Effect effect)   {
         this.name = name;
         this.effect = effect;
     }
@@ -32,4 +32,18 @@ public abstract class AbstractAction {
         return name;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AbstractAction that = (AbstractAction) o;
+
+        return name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
 }

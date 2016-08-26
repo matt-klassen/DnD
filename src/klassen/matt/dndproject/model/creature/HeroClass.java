@@ -53,51 +53,51 @@ public enum HeroClass {
     }
 
     private static AbilityScores initBarbarianScores() {
-        return new AbilityScores(15, 13, 14, 8, 12, 10);
+        return new AbilityScores(15, 13, 14, 8, 12, 10, "str");
     }
 
     private static AbilityScores initBardScores() {
-        return new AbilityScores(8, 14, 13, 10, 12, 15);
+        return new AbilityScores(8, 14, 13, 10, 12, 15, "cha");
     }
 
     private static AbilityScores initClericScores() {
-        return new AbilityScores(13, 12, 14, 8, 15, 10);
+        return new AbilityScores(13, 12, 14, 8, 15, 10, "wis");
     }
 
     private static AbilityScores initDruidScores() {
-        return new AbilityScores(13, 12, 14, 8, 15, 10);
+        return new AbilityScores(13, 12, 14, 8, 15, 10, "wis");
     }
 
     private static AbilityScores initFighterScores() {
-        return new AbilityScores(15, 13, 14, 8, 12, 10);
+        return new AbilityScores(15, 13, 14, 8, 12, 10, "str");
     }
 
     private static AbilityScores initMonkScores() {
-        return new AbilityScores(10, 15, 14, 8, 13, 12);
+        return new AbilityScores(10, 15, 14, 8, 13, 12, "dex");
     }
 
     private static AbilityScores initPaladinScores() {
-        return new AbilityScores(15, 10, 14, 8, 13, 12);
+        return new AbilityScores(15, 10, 14, 8, 13, 12, "str");
     }
 
     private static AbilityScores initRogueScores() {
-        return new AbilityScores(10, 15, 14, 12, 8, 13);
+        return new AbilityScores(10, 15, 14, 12, 8, 13, "dex");
     }
 
     private static AbilityScores initRangerScores() {
-        return new AbilityScores(13, 14, 15, 10, 12, 8);
+        return new AbilityScores(13, 14, 15, 10, 12, 8, "dex");
     }
 
     private static AbilityScores initSorcererScores() {
-        return new AbilityScores(8, 14, 13, 10, 12, 15);
+        return new AbilityScores(8, 14, 13, 10, 12, 15, "cha");
     }
 
     private static AbilityScores initWarlockScores() {
-        return new AbilityScores(8, 13, 14, 10, 12, 15);
+        return new AbilityScores(8, 13, 14, 10, 12, 15, "cha");
     }
 
     private static AbilityScores initWizardScores() {
-        return new AbilityScores(8, 14, 13, 15, 12, 10);
+        return new AbilityScores(8, 14, 13, 15, 12, 10, "int");
     }
 
     private static Item axe() {
