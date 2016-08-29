@@ -6,13 +6,12 @@ import klassen.matt.dndproject.model.creature.exception.LevelException;
 import klassen.matt.dndproject.model.creature.exception.NoNameException;
 import klassen.matt.dndproject.model.mechanics.Die;
 import klassen.matt.dndproject.model.mechanics.Effect;
-import klassen.matt.dndproject.model.traits.AbilityScores;
 
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Creates new Heroes based on user input data
+ * Helper class to create new Heroes based on user input data
  */
 public class HeroFactory {
 

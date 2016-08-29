@@ -65,7 +65,6 @@ public abstract class AbstractCreature extends Observable {
         items = new HashSet<Item>();
         alive = true;
         combatLog = CombatLog.getInstance();
-        // TODO: Observers for dead/alive status
     }
 
     /**
@@ -125,21 +124,12 @@ public abstract class AbstractCreature extends Observable {
     }
 
     /**
-     * Changes the alive/dead status of the creature, where
-     * the creature is alive if true, dead if false
+     * Adds a new item to the creature's list of currently held items. If the
+     * item was previously held by another creature, it is removed from the
+     * previous creature's list of held items
      *
-     * @param alive the new alive status for the creature
+     * @param i the item to be added to the creature
      */
-    public void setAlive(boolean alive) {
-        this.alive = alive;
-        this.setChanged();
-        this.notifyObservers();
-    }
-
-    public void incArmorClass() {
-        armorClass++;
-    }
-
     public void addItem(Item i) {
         if (!items.contains(i)) {
             i.setOwner(null);
@@ -150,6 +140,8 @@ public abstract class AbstractCreature extends Observable {
     public void removeItem(Item i) {
         items.remove(i);
     }
+
+    public void incArmorClass() { armorClass++; }
 
     public Set<Item> getItems() {
         return items;
@@ -175,10 +167,6 @@ public abstract class AbstractCreature extends Observable {
 
     public void setHitPoints(int newHP) {
         this.hitPoints = newHP;
-    }
-
-    public int getSpeed() {
-        return speed;
     }
 
     public AbilityScores getAbilityScores() {

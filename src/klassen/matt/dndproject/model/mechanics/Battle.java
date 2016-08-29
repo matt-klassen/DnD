@@ -17,6 +17,11 @@ import java.util.List;
  */
 public class Battle {
 
+    /**
+     * Calculates the roll bonus modifier from a given ability score
+     * @param score the given ability score
+     * @return the roll adjustment modifier
+     */
     private static int abilityScoreBonus(int score) {
         int bonus = score;
         bonus -= 10;
@@ -24,6 +29,14 @@ public class Battle {
         return bonus;
     }
 
+    /**
+     * Handles an attempt of an attacker to hit a target. D20 roll plus modifiers
+     * and bonuses are tried against a target's armor class.
+     *
+     * @param attacker the attacking creature
+     * @param target the attacking creature's target
+     * @return true if attacker hit the target, false otherwise
+     */
     public static boolean rollToHit(AbstractCreature attacker, AbstractCreature target) {
 
         CombatLog combatLog = CombatLog.getInstance();
@@ -46,6 +59,12 @@ public class Battle {
         }
     }
 
+    /**
+     * Handles a creature's attempt to heal itself with a healing action
+     *
+     * @param creature the creature healing itself
+     * @param actionEffect the effect of the heal
+     */
     public static void handleHeal(AbstractCreature creature, Effect actionEffect) {
         try {
             creature.heal(actionEffect.rollDie());
@@ -54,6 +73,17 @@ public class Battle {
             throw new IllegalArgumentException();
         }
     }
+
+    /**
+     * Handles an attack by an attacker on a target creature. Rolls to hit then applies
+     * effects of attack if hit was successful. A creature that is killed is removed from
+     * its UI group box and ownership of its items is transferred to the attacker
+     *
+     * @param attacker the attacking creature
+     * @param target the attacker's target
+     * @param actionEffect the effect of the attack
+     * @param otherBox the UI box containing the target (for targets removal if killed)
+     */
 
     public static void handleAttack(AbstractCreature attacker, AbstractCreature target,
                               Effect actionEffect, GroupBox otherBox) {
@@ -82,6 +112,13 @@ public class Battle {
         }
     }
 
+    /**
+     * Transfers ownership of an item from a slain creature to the attacking creature
+     * and refreshes UI to reflect newly accessible item
+     *
+     * @param attacker the creature that is obtaining a killed creature's item
+     * @param i the item the creature is obtaining
+     */
     private static void gainItem(AbstractCreature attacker, Item i) {
         if (!attacker.getItems().contains(i)) {
             attacker.addItem(i);
@@ -97,6 +134,11 @@ public class Battle {
         }
     }
 
+    /**
+     * If a given creature is a Hero, its information is updated in the UI
+     * Hero information text box
+     * @param creature the hero to be updated
+     */
     private static void heroUpdate(AbstractCreature creature) {
         if (creature.getClass() == Hero.class) {
             if (!creature.getAlive()) {

@@ -4,7 +4,7 @@ import javafx.scene.control.TextArea;
 import klassen.matt.dndproject.model.creature.Hero;
 
 /**
- * Field that features info on currently selected hero
+ * JavaFX Field that features info on currently selected hero
  */
 public class HeroInfo extends TextArea {
 

@@ -26,7 +26,7 @@ public class NewMonsterPopup {
         this.parent = parent;
     }
 
-    public void display() { // TODO: fix throwing exception with default choices
+    public void display() {
         window = initWindow();
         monsterBox = parent.getMonsterBox();
         VBox inputList = initInputArea();

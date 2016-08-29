@@ -1,6 +1,5 @@
 package klassen.matt.dndproject.model.creature;
 
-import com.oracle.jrockit.jfr.InvalidValueException;
 import klassen.matt.dndproject.model.actions.Action;
 import klassen.matt.dndproject.model.creature.exception.HitPointException;
 import klassen.matt.dndproject.model.creature.exception.LevelException;
@@ -13,16 +12,21 @@ import klassen.matt.dndproject.ui.HeroInfo;
 import java.util.Set;
 
 /**
- * Represents a heroic player character or NPC (as opposed to a generic NPC)
+ * Represents a heroic player character or NPC (as opposed to a monster/opponent NPC)
  */
 public class Hero extends AbstractCreature {
 
     public static final int LEVEL_HP_BOOST = 5;
 
+    /** The Hero's current level (between 1 and 20, inclusive) */
     private int level;
+    /** The string representation of the Hero's class */
     private String heroClass;
+    /** The Hero's background (flavour description) */
     private String background;
+    /** The Hero's current experience point total */
     private int experience;
+    /** A static list of levels 1-20 */
     private static Levels[] levels;
 
     /**
@@ -149,6 +153,11 @@ public class Hero extends AbstractCreature {
 
     }
 
+    /**
+     * Boosts the hero's power when it levels up. When a level that is a multiple of four is
+     * reached, key and constitution ability scores increase along with armor class.
+     * At all levels, hit points are boosted.
+     */
     private void levelBoost() {
         if (level%4==0) {
             this.getAbilityScores().incKeyScore();
@@ -163,6 +172,10 @@ public class Hero extends AbstractCreature {
         }
     }
 
+    /**
+     * Sets initial armor class and ability scores at time of Hero creation (as
+     * appropriate for the creation level of the Hero)
+     */
     private void initScores() {
         for (int i = 1; i < level/4; i++) {
             this.getAbilityScores().incKeyScore();
@@ -171,6 +184,10 @@ public class Hero extends AbstractCreature {
         }
     }
 
+    /**
+     * Sets initial hit points at time of Hero creation (as
+     * appropriate for the creation level of the Hero)
+     */
     private void initHP() {
         for (int i = 1; i < level; i++) {
             setHitPoints(getHitPoints() + ((getAbilityScores().getConScore()-10)/2) + LEVEL_HP_BOOST);

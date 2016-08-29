@@ -6,7 +6,8 @@ import klassen.matt.dndproject.model.mechanics.Effect;
 import klassen.matt.dndproject.model.traits.AbilityScores;
 
 /**
- * Created by matt on 16/06/16.
+ * Enum for all possible Hero classes: key ability scores, starting ability scores,
+ * starting armor class, items and actions
  */
 public enum HeroClass {
 

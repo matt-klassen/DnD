@@ -5,9 +5,9 @@ import klassen.matt.dndproject.model.mechanics.Die;
 import klassen.matt.dndproject.model.mechanics.Effect;
 
 /**
- *
+ * Enum for actions to be used by creatures
  */
-public enum AbstractActionList {
+public enum ActionList {
 
     DAGGER(initDagger()),
     AXE(initAxe()),
@@ -21,77 +21,77 @@ public enum AbstractActionList {
     DISINTEGRATION_RAY(initDisintegrationRay()),
     DRAIN_SOUL(initDrainSoul());
 
-    private AbstractAction abstractAction;
+    private Action abstractAction;
 
-    AbstractActionList(AbstractAction abstractAction) {
+    ActionList(Action abstractAction) {
         this.abstractAction = abstractAction;
     }
 
-    public AbstractAction getAbstractAction() {
+    public Action getAbstractAction() {
         return abstractAction;
     }
 
-    private static AbstractAction initDagger() {
+    private static Action initDagger() {
         Effect effect = new Effect(CommonDie.D4.getDie(), "Damage");
         Item dagger = new Item("Dagger", effect, false);
         return dagger;
     }
-    private static AbstractAction initAxe() {
+    private static Action initAxe() {
         Effect effect = new Effect(CommonDie.D10.getDie(), "Damage");
         Item axe = new Item("Axe", effect, false);
         return axe;
     }
-    private static AbstractAction initWandOfFireball() {
+    private static Action initWandOfFireball() {
         Die die = new Die("8d6");
         Effect effect = new Effect(die, "Damage");
         Item WandOfFireball = new Item("Wand of Fireball", effect, true);
         return WandOfFireball;
 
     }
-    private static AbstractAction initWandOfDrainLife() {
+    private static Action initWandOfDrainLife() {
         Die die = new Die("4d8");
         Effect effect = new Effect(die, "Hybrid");
         Item WandOfDrainLife = new Item("Wand of Drain Life", effect, true);
         return WandOfDrainLife;
     }
-    private static AbstractAction initWarmaul() {
+    private static Action initWarmaul() {
         Die die = new Die("2d6");
         Effect effect = new Effect(die, "Damage");
         Item warmaul = new Item("Warmaul", effect, false);
         return warmaul;
     }
-    private static AbstractAction initClaws() {
+    private static Action initClaws() {
         Die die = new Die("2d8");
         Effect effect = new Effect(die, "Damage");
         Action claws = new Action("Claw Attack", effect);
         return claws;
     }
-    private static AbstractAction initBite() {
+    private static Action initBite() {
         Die die = new Die("2d8");
         Effect effect = new Effect(die, "Damage");
         Action bite = new Action("Bite", effect);
         return bite;
     }
-    private static AbstractAction initRegenerate() {
+    private static Action initRegenerate() {
         Die die = new Die("2d4");
         Effect effect = new Effect(die, "Healing");
         Action regenerate = new Action("Regenerate", effect);
         return regenerate;
     }
-    private static AbstractAction initFireBreath() {
+    private static Action initFireBreath() {
         Die die = new Die("8d6");
         Effect effect = new Effect(die, "Damage");
         Action fireBreath = new Action("Fire Breath", effect);
         return fireBreath;
     }
 
-    private static AbstractAction initDisintegrationRay() {
+    private static Action initDisintegrationRay() {
         Die die = new Die("8d6");
         Effect effect = new Effect(die, "Damage");
         Action disintegrationRay = new Action("Disintegration Ray", effect);
         return disintegrationRay;
     }
-    private static AbstractAction initDrainSoul() {
+    private static Action initDrainSoul() {
         Die die = new Die("10d10");
         Effect effect = new Effect(die, "Hybrid");
         Action drainSoul = new Action("Drain Soul", effect);

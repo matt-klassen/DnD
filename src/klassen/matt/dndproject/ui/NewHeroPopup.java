@@ -31,7 +31,7 @@ public class NewHeroPopup {
         this.parent = parent;
     }
 
-    public void display() { // TODO: fix throwing exception with default choices
+    public void display() {
         window = initWindow();
         partyBox = parent.getPartyBox();
         Label label = new Label("Create a Hero");
@@ -183,8 +183,5 @@ public class NewHeroPopup {
     private void selectLevel(int level) {
         this.level = level;
     }
-
-    // TODO implement listeners for user submission fields
-    // TODO implement HBox for cancel/submit buttons
 
 }

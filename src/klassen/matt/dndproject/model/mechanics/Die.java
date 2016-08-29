@@ -54,12 +54,4 @@ public class Die {
         return result;
     }
 
-    public int getNumOfDie() {
-        return numOfDie;
-    }
-
-    public int getSidesOfDie() {
-        return numOfSides;
-    }
-
 }
