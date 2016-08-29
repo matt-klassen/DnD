@@ -19,7 +19,7 @@ import klassen.matt.dndproject.ui.exception.TooManyCreaturesException;
  * @version 1.0
  * @since 2016-06-01
  *
- * The main UI window
+ * The main UI window for RPG Combat Application
  */
 public class DnDCombat extends Application {
     public static final int WIDTH = 800;

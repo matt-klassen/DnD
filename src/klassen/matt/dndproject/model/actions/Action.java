@@ -3,53 +3,46 @@ package klassen.matt.dndproject.model.actions;
 import klassen.matt.dndproject.model.mechanics.Effect;
 
 /**
- * Represents an action that can be taken in or out
- * of combat by a character, monster or NPC
+ * Represents actions that can be taken by a creature
  */
-public class Action extends AbstractAction {
+public class Action {
 
-    /** action is classified as a legendary action if true */
-    private boolean isLegendary;
-    /** action is classified as a spell if true */
-    private boolean isSpell;
+    protected String name;
+    protected Effect effect;
 
-    /**
-     * Constructor
-     *
-     * @param name      the name of the action
-     */
     public Action(String name) {
-        super(name);
-        isLegendary = false;
+        this.name = name;
+    }
+
+    public Action(String name, Effect effect)   {
+        this.name = name;
+        this.effect = effect;
     }
 
     /**
-     * Constructor
+     * Invokes the action, returning the action's effect or
+     * null if the action has no effect.
      *
-     * @param name      the name of the action
-     * @param effect    the actions's effect when invoked
+     * @return the effect of the action
      */
-    public Action(String name, Effect effect) {
-        super(name, effect);
-        isLegendary = false;
+    public Effect invokeAction() { return effect; } // revise as necessary with change of effect class
+
+    public String getName() {
+        return name;
     }
 
-    /**
-     * Constructor
-     *
-     * @param name          the name of the action
-     * @param effect        the actions's effect when invoked
-     * @param isLegendary   the action's legendary status
-     */
-    public Action(String name, Effect effect, boolean isLegendary, boolean isSpell) {
-        super(name, effect);
-        this.isLegendary = isLegendary;
-        this.isSpell = isSpell;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Action that = (Action) o;
+
+        return name.equals(that.name);
     }
 
-    public boolean getIsLegendary() {
-        return isLegendary;
+    @Override
+    public int hashCode() {
+        return name.hashCode();
     }
-
-    public boolean getIsSpell() { return isSpell; }
 }

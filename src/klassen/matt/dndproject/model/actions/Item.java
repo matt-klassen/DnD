@@ -7,7 +7,7 @@ import klassen.matt.dndproject.model.mechanics.Effect;
 /**
  * Represents a useable item
  */
-public class Item extends AbstractAction {
+public class Item extends Action {
 
     AbstractCreature owner;
     /** item is considered to be a magic item */

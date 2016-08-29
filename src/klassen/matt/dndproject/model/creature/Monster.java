@@ -1,8 +1,8 @@
 package klassen.matt.dndproject.model.creature;
 
 
-import klassen.matt.dndproject.model.actions.AbstractActionList;
 import klassen.matt.dndproject.model.actions.Action;
+import klassen.matt.dndproject.model.actions.ActionList;
 import klassen.matt.dndproject.model.actions.Item;
 import klassen.matt.dndproject.model.creature.exception.NoNameException;
 import klassen.matt.dndproject.model.traits.AbilityScores;
@@ -11,13 +11,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Represents a monster in D&D 5e
+ * Represents a monster
  */
 public class Monster extends AbstractCreature {
 
+    /** Creatures challenge rating helps generate balanced encounters */
     private int challengeRating;
+    /** Amount of experience points awarded for slaying this creature */
     private int experience;
 
+    /** Running totals for each type of creature as generated */
     private static Integer numKobolds = 0;
     private static Integer numGoblins = 0;
     private static Integer numOrcs = 0;
@@ -65,7 +68,6 @@ public class Monster extends AbstractCreature {
     /**
      * Below is static initialization for all Monsters
      */
-
     public static Monster newKobold() {
         AbilityScores koboldScores = new AbilityScores(9, 13, 10, 10, 9, 8, "dex");
         try {
@@ -73,7 +75,7 @@ public class Monster extends AbstractCreature {
             String name = "Kobold " + numKobolds.toString();
             Monster kobold = new Monster(name, "Draconic", 12, 5, 30,
                     koboldScores, new HashSet<>(), 1, 100);
-            Item dagger = (Item) AbstractActionList.DAGGER.getAbstractAction();
+            Item dagger = (Item) ActionList.DAGGER.getAbstractAction();
             kobold.addItem(dagger);
             return kobold;
         } catch (NoNameException e) {
@@ -88,7 +90,7 @@ public class Monster extends AbstractCreature {
             String name = "Goblin " + numGoblins.toString();
             Monster goblin = new Monster(name, "Humanoid", 15, 7, 30,
                     goblinScores, new HashSet<>(), 1, 150);
-            Item axe = (Item) AbstractActionList.AXE.getAbstractAction();
+            Item axe = (Item) ActionList.AXE.getAbstractAction();
             goblin.addItem(axe);
             return goblin;
         } catch (NoNameException e) {
@@ -104,7 +106,7 @@ public class Monster extends AbstractCreature {
             Monster orc = new Monster(name, "Humanoid", 13, 15, 30,
                     orcScores, new HashSet<>(), 2, 300);
             Item warmaul =
-                    (Item) AbstractActionList.WARMAUL.getAbstractAction();
+                    (Item) ActionList.WARMAUL.getAbstractAction();
             orc.addItem(warmaul);
             return orc;
         } catch (NoNameException e) {
@@ -114,8 +116,8 @@ public class Monster extends AbstractCreature {
 
     public static Monster newOwlbear() {
         AbilityScores owlBScores = new AbilityScores(20, 12, 17, 3, 12, 7, "str");
-        Action claw = (Action) AbstractActionList.CLAWS.getAbstractAction();
-        Action bite = (Action) AbstractActionList.BITE.getAbstractAction();
+        Action claw = ActionList.CLAWS.getAbstractAction();
+        Action bite = ActionList.BITE.getAbstractAction();
         Set owlBActions = new HashSet<>();
         owlBActions.add(claw);
         owlBActions.add(bite);
@@ -132,10 +134,10 @@ public class Monster extends AbstractCreature {
 
     public static Monster newTroll() {
         AbilityScores trollScores = new AbilityScores(18, 13, 20, 7, 9, 7, "str");
-        Action claw = (Action) AbstractActionList.CLAWS.getAbstractAction();
-        Action bite = (Action) AbstractActionList.BITE.getAbstractAction();
+        Action claw = ActionList.CLAWS.getAbstractAction();
+        Action bite = ActionList.BITE.getAbstractAction();
         Action regenerate =
-                (Action) AbstractActionList.REGENERATE.getAbstractAction();
+                ActionList.REGENERATE.getAbstractAction();
         Set trollActions = new HashSet<>();
         trollActions.add(claw);
         trollActions.add(bite);
@@ -154,10 +156,10 @@ public class Monster extends AbstractCreature {
 
     public static Monster newRedDragon() {
         AbilityScores dragonScores = new AbilityScores(27, 10, 25, 16, 13, 21, "str");
-        Action claw = (Action) AbstractActionList.CLAWS.getAbstractAction();
-        Action bite = (Action) AbstractActionList.BITE.getAbstractAction();
+        Action claw = ActionList.CLAWS.getAbstractAction();
+        Action bite = ActionList.BITE.getAbstractAction();
         Action fireBreath =
-                (Action) AbstractActionList.FIRE_BREATH.getAbstractAction();
+                ActionList.FIRE_BREATH.getAbstractAction();
         Set dragonActions = new HashSet<>();
         dragonActions.add(claw);
         dragonActions.add(bite);
@@ -177,9 +179,8 @@ public class Monster extends AbstractCreature {
     public static Monster newBeholder() {
         AbilityScores beholderScores =
                 new AbilityScores(10, 14, 18, 17, 15, 17, "int");
-        Action bite = (Action) AbstractActionList.BITE.getAbstractAction();
-        Action disintegrate = (Action)
-                AbstractActionList.DISINTEGRATION_RAY.getAbstractAction();
+        Action bite = ActionList.BITE.getAbstractAction();
+        Action disintegrate = ActionList.DISINTEGRATION_RAY.getAbstractAction();
         Set beholderActions = new HashSet<>();
         beholderActions.add(bite);
         beholderActions.add(disintegrate);
@@ -197,7 +198,7 @@ public class Monster extends AbstractCreature {
 
     public static Monster newDevil() {
         AbilityScores devilScores = new AbilityScores(21, 14, 18, 18, 15, 18, "cha");
-        Action claw = (Action) AbstractActionList.CLAWS.getAbstractAction();
+        Action claw = ActionList.CLAWS.getAbstractAction();
         Set devilActions = new HashSet<>();
         devilActions.add(claw);
         try {
@@ -206,7 +207,7 @@ public class Monster extends AbstractCreature {
             Monster devil = new Monster(name, "Fiend", 18, 180,
                     40, devilScores, devilActions, 14, 11500);
             Item wandOfDrainLife = (Item)
-                    AbstractActionList.WAND_OF_DRAIN_LIFE.getAbstractAction();
+                    ActionList.WAND_OF_DRAIN_LIFE.getAbstractAction();
             devil.addItem(wandOfDrainLife);
             return devil;
 
@@ -217,8 +218,7 @@ public class Monster extends AbstractCreature {
 
     public static Monster newLich() {
         AbilityScores lichScores = new AbilityScores(11, 16, 16, 20, 14, 16, "int");
-        Action drainSoul = (Action)
-                AbstractActionList.DRAIN_SOUL.getAbstractAction();
+        Action drainSoul = ActionList.DRAIN_SOUL.getAbstractAction();
         Set lichActions = new HashSet<>();
         lichActions.add(drainSoul);
         try {
@@ -227,9 +227,9 @@ public class Monster extends AbstractCreature {
             Monster lich = new Monster(name, "Undead", 17, 135,
                     30, lichScores, lichActions, 20, 33000);
             Item wandOfFireball = (Item)
-                    AbstractActionList.WAND_OF_FIREBALL.getAbstractAction();
+                    ActionList.WAND_OF_FIREBALL.getAbstractAction();
             Item wandOfDrainLife = (Item)
-                    AbstractActionList.WAND_OF_DRAIN_LIFE.getAbstractAction();
+                    ActionList.WAND_OF_DRAIN_LIFE.getAbstractAction();
             lich.addItem(wandOfFireball);
             lich.addItem(wandOfDrainLife);
             return lich;

@@ -12,7 +12,7 @@ public class AbilityScores {
     private int intScore;
     private int wisScore;
     private int chaScore;
-    /** the key ability score for the owner of this set of Ability Scores */
+    /** the key(primary) ability score for the owner of this set of Ability Scores */
     private String keyScore;
 
     public AbilityScores(int strScore, int dexScore,

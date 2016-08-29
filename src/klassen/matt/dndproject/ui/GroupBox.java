@@ -4,13 +4,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.*;
-import klassen.matt.dndproject.model.actions.AbstractAction;
 import klassen.matt.dndproject.model.actions.Action;
-import klassen.matt.dndproject.model.actions.Item;
 import klassen.matt.dndproject.model.creature.AbstractCreature;
 import klassen.matt.dndproject.model.creature.Hero;
-import klassen.matt.dndproject.model.creature.Monster;
-import klassen.matt.dndproject.model.creature.exception.IllegalValueException;
 import klassen.matt.dndproject.model.mechanics.Effect;
 import klassen.matt.dndproject.model.mechanics.Battle;
 import klassen.matt.dndproject.ui.exception.TooManyCreaturesException;
@@ -91,12 +87,7 @@ public class GroupBox extends VBox {
         generateSelectedCreatureActions();
     }
 
-    /**
-     * Invokes an action against a selected target
-     *
-     * @param action the selected creature's action to be used against selected target
-     */
-    public void useAction(AbstractAction action) {
+    public void useAction(Action action) {
 
         AbstractCreature creature = selectedCreature;
         AbstractCreature target = null;
@@ -206,12 +197,12 @@ public class GroupBox extends VBox {
     }
 
     private void generateSelectedCreatureActions() {
-        Set<AbstractAction> creatureActions = new HashSet<>();
+        Set<Action> creatureActions = new HashSet<>();
         creatureActions.addAll(selectedCreature.getActions());
         creatureActions.addAll(selectedCreature.getItems());
         
         pairedBox.clear();
-        for (AbstractAction action : creatureActions) {
+        for (Action action : creatureActions) {
             pairedBox.addAction(action);
         }
     }
